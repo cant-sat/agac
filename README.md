@@ -1,13 +1,7 @@
-# A. G. A. C. (Advanced A. G. A.)
+# Pages for this
 
 ## About
 
-todo
+the website for AGAC
 
-### Why A. G. A. C. ?
-
-TODO
-
-## Resources
-
-TODO
+https://utelagazkodas.github.io/agac/
