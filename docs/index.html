@@ -8,25 +8,7 @@
 
 
 <canvas id="myChart" style="width:100%;max-width:600px"></canvas>
-
-        <script type='text/javascript'>
-          var Module = {};
-          fetch('index.wasm')
-            .then(response =>
-              response.arrayBuffer()
-            ).then(buffer => {
-              Module.canvas = document.getElementById("canvas");
-              Module.wasmBinary = buffer;
-              var script = document.createElement('script');
-              script.src = "index.js";
-              script.onload = function() {
-                console.log("Emscripten boilerplate loaded.")
-              }
-              document.body.appendChild(script);
-            });
-        </script>
-    
-        <canvas id="canvas" style="width:900px; height:1600px"></canvas>
+<canvas id="canvas" style="width:900px; height:1600px"></canvas>
         
 </body>
 </html> 
@@ -54,4 +36,21 @@
         }
       }
     });
+</script>
+
+<script type='text/javascript'>
+        var Module = {};
+          fetch('index.wasm')
+            .then(response =>
+              response.arrayBuffer()
+            ).then(buffer => {
+              Module.canvas = document.getElementById("canvas");
+              Module.wasmBinary = buffer;
+              var script = document.createElement('script');
+              script.src = "index.js";
+              script.onload = function() {
+                console.log("Guess what? The best thing just loaded. It is called WebAssembly to display... ummm.. no idea what.\nThat aside, behold!!! WebAssembly is coming for you! Cry! You have no chance!\nMuhahahahahahahahahahahahahahahahahahahahahahahahahahahahahaha")
+              }
+              document.body.appendChild(script);
+            });
 </script>
