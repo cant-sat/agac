@@ -1,59 +1,61 @@
 <!DOCTYPE html>
-<html>
-    <script src="/src/chart.js"></script>
-<body>
-
-<h4>My First Heading</h4>
-<p>My first paragraph.</p>
-
-
-<canvas id="myChart" style="width:100%;max-width:600px"></canvas>
-<canvas id="canvas" style="width:900px; height:1600px"></canvas>
-
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7353054423434096"
-     crossorigin="anonymous"></script>
+<head>
+    <html>
+        <script src="/src/chart.js"></script>
+        <body>
+            
+            <h4>My First Heading</h4>
+            <p>My first paragraph.</p>
+            
+            
+            <canvas id="myChart" style="width:100%;max-width:600px"></canvas>
+            <canvas id="canvas" style="width:900px; height:1600px"></canvas>
+                
+        </body>
+    </html> 
     
-</body>
-</html> 
-
-<script>
-    const xValues = [50,60,70,80,90,100,110,120,130,140,150];
-    const yValues = [7,8,8,9,9,9,10,11,14,14,15];
+    <script>
+        const xValues = [50,60,70,80,90,100,110,120,130,140,150];
+        const yValues = [7,8,8,9,9,9,10,11,14,14,15];
+        
+        new Chart("myChart", {
+          type: "line",
+          data: {
+            labels: xValues,
+            datasets: [{
+              fill: false,
+              lineTension: 0,
+              backgroundColor: "rgba(0,0,255,1.0)",
+              borderColor: "rgba(0,0,255,0.1)",
+              data: yValues
+            }]
+          },
+          options: {
+            legend: {display: false},
+            scales: {
+              yAxes: [{ticks: {min: 6, max:16}}],
+            }
+          }
+        });
+    </script>
     
-    new Chart("myChart", {
-      type: "line",
-      data: {
-        labels: xValues,
-        datasets: [{
-          fill: false,
-          lineTension: 0,
-          backgroundColor: "rgba(0,0,255,1.0)",
-          borderColor: "rgba(0,0,255,0.1)",
-          data: yValues
-        }]
-      },
-      options: {
-        legend: {display: false},
-        scales: {
-          yAxes: [{ticks: {min: 6, max:16}}],
-        }
-      }
-    });
-</script>
-
-<script type='text/javascript'>
-        var Module = {};
-          fetch('index.wasm')
-            .then(response =>
-              response.arrayBuffer()
-            ).then(buffer => {
-              Module.canvas = document.getElementById("canvas");
-              Module.wasmBinary = buffer;
-              var script = document.createElement('script');
-              script.src = "index.js";
-              script.onload = function() {
-                console.log("Loaded WASM")
-              }
-              document.body.appendChild(script);
-            });
-</script>
+    <script type='text/javascript'>
+            var Module = {};
+              fetch('index.wasm')
+                .then(response =>
+                  response.arrayBuffer()
+                ).then(buffer => {
+                  Module.canvas = document.getElementById("canvas");
+                  Module.wasmBinary = buffer;
+                  var script = document.createElement('script');
+                  script.src = "index.js";
+                  script.onload = function() {
+                    console.log("Loaded WASM")
+                  }
+                  document.body.appendChild(script);
+                });
+    </script>
+    
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7353054423434096"
+         crossorigin="anonymous"></script>
+</head>
