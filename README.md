@@ -1,4 +1,5 @@
-https://github.com/Utelagazkodas/agac/blob/c6a8953f476a92693051f6b9380e37fadb1db494/Asset%202@4x.png?raw=true
+
+![Asset 2@4x](https://github.com/Utelagazkodas/agac/assets/127396354/00b72098-199c-4389-a5b2-b39ec1633a2d)
 
 ## About
 
