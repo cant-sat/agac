@@ -1,14 +1,19 @@
+import { Canvas } from "@react-three/fiber"
+import { Experience } from "./components/experience"
 
 
-function App() :JSX.Element {
+function App(): JSX.Element {
 
 
   return (
-    <body >
+    <>
+      <div className="w-screen min-h-screen overflow-hidden bg-gradient-to-tr from-amber-300 to-amber-800 ">
+        <Canvas style={{ height: '100vh' }}>
+          <Experience/>
+        </Canvas>
 
-      <div className="text-5xl">Hello World</div>
-      
-    </body>
+      </div>
+    </>
   )
 }
 
