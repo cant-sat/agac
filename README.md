@@ -1,8 +1,9 @@
+# React Template
 
-![Agac Logo](logo.png)
+You will need to run `npm i -y`
 
-## About
+to build it just run: `npm run build`
 
-[the website for AGAC](https://agac.toaster.hu)
+if you are still developing: `npm run dev`
 
-https://utelagazkodas.github.io/agac/
+Make sure to rewrite the CNAME if you are using one
