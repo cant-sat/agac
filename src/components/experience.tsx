@@ -7,9 +7,12 @@ import { useThree, useFrame } from "@react-three/fiber";
 export let setScroll: Function;
 
 // render the stars
-const stars: React.ReactNode = (<>        {Array.from({ length: 300 }, () =>
-    star(getRandomVector3(50, 70, true), 0.2, 0.3)
-)}</>)
+const stars: React.ReactNode = (
+    <>
+        {Array.from({ length: 300 }, () =>
+            star(getRandomVector3(50, 70, true), 0.2, 0.3)
+        )}
+    </>)
 
 export function Experience(): React.ReactNode {
 
@@ -31,24 +34,32 @@ export function Experience(): React.ReactNode {
     // update every frame
     useFrame(() => {
         if (torusRef.current) {
-            torusRef.current.rotation.x += 0.01 * ((offset + 500)/1000)
-            torusRef.current.rotation.y += 0.01 * ((offset+500)/1000)
+            torusRef.current.rotation.x += 0.01 * ((offset + 500) / 1000)
+            torusRef.current.rotation.y += 0.01 * ((offset + 500) / 1000)
         }
     })
 
     return (<>
 
-        <pointLight color={new Color("#ff00ff")} position={[1, 0.5, 0]} intensity={1} />
-        <CameraShake intensity={1} />
 
-        <mesh ref={torusRef} position={[1, 0.5, 0]} >
-            <torusGeometry args={[1, 0.2, 3, 20, 20]}/>
-            <meshStandardMaterial color="white" />
+        <pointLight color={new Color("#ff00ff")} position={[1, 0.5, 0]} intensity={1} castShadow
+            shadow-mapSize-width={1024}
+            shadow-mapSize-height={1024}
+            shadow-camera-near={0.1}
+            shadow-camera-far={25}
+        />
+
+
+        <CameraShake intensity={0.8} />
+
+        <mesh ref={torusRef} position={[1, 0.5, 0]} castShadow>
+            <torusGeometry args={[1, 0.2, 3, 20, 20]} />
+            <meshStandardMaterial />
         </mesh>
 
-        <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -1, 0]}>
+        <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -1, 0]} receiveShadow>
             <planeGeometry args={[1000, 1000]} />
-            <meshStandardMaterial color="white" />
+            <meshStandardMaterial />
         </mesh>
 
         {stars}
@@ -60,8 +71,6 @@ function star(pos: Vector3, minSize: number = 0.5, maxSize: number = 0.5): React
 
 
     return (<>
-        {/* White Light Emitting Globe */}
-
         <mesh position={pos}>
             <sphereGeometry args={[getRandomNumber(minSize, maxSize), 32, 32]} />
             <meshBasicMaterial />
