@@ -28,7 +28,14 @@ function ScrollDown(scroll : number, disappear : number) : React.ReactNode{
 
     const opacity = -1 * ((scroll - disappear) / disappear)
 
+    // if on mobile so the scroll down goes above the buttons
+    if(window.innerHeight > window.innerWidth){
+        return (<>
+            <div className="absolute flex right-6 bottom-[5vh]" style={{opacity : opacity}}><div className="self-center text-xl">scroll down!</div><MdKeyboardDoubleArrowDown className="self-center text-5xl text-white" /></div>
+        </>)
+    }
+
     return (<>
-        <div className="absolute flex right-6 bottom-3" style={{opacity : opacity}}><div className="self-center text-xl">scroll down!</div><MdKeyboardDoubleArrowDown className="self-center text-5xl text-white" /></div>
+        <div className="absolute flex p-2 rounded-3xl right-6 bottom-3" style={{opacity : opacity}}><div className="self-center text-xl">scroll down!</div><MdKeyboardDoubleArrowDown className="self-center text-5xl text-white" /></div>
     </>)
 }

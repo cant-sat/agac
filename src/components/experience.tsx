@@ -22,6 +22,7 @@ export function Experience(): React.ReactNode {
 
     // change the position of the camera based on scroling
     const { camera } = useThree()
+    camera.position.set(0, 0, (offset + 600) / 200)
 
     useEffect(() => {
         // Set the camera position
