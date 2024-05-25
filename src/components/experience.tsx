@@ -1,17 +1,33 @@
-import React from "react";
-import { OrbitControls } from "@react-three/drei";
+import React, { useEffect, useState } from "react";
+import { CameraShake} from "@react-three/drei";
 import { Vector3 } from "three";
 import { getRandomNumber, getRandomVector3 } from "../utility/random";
+import { useThree } from "@react-three/fiber";
+
+export let setScroll : Function;
+
+const stars : React.ReactNode = (<>        {Array.from({length: 300}, () =>
+                
+star(getRandomVector3(30, 40, true), 0.1, 0.2)
+)}</>)
 
 export function Experience(): React.ReactNode {
 
+    const [offset, setOffset] = useState(0)
+    setScroll = setOffset
 
+    const {camera} = useThree()
+
+    useEffect(() => {
+        // Set the camera position
+        camera.position.set(0, 0, (offset +1000) / 1000); // Adjust the position as needed
+    }, [camera, offset]);
 
     return (<>
 
         <pointLight color="red" position={[1, 0, 0]}  intensity={1} />
-
-        <OrbitControls />
+        <CameraShake intensity={1}/>
+        
         <mesh position={[1, 0, 0]}>
             <torusGeometry />
             <meshStandardMaterial  color="white" />
@@ -22,10 +38,7 @@ export function Experience(): React.ReactNode {
             <meshStandardMaterial color="white" />
         </mesh>
 
-        {Array.from({length: 300}, () =>
-                
-                star(getRandomVector3(30, 40, true), 0.1, 0.2)
-            )}
+        {stars}
 
     </>)
 }
