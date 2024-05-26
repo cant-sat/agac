@@ -53,7 +53,7 @@ export function Experience(): React.ReactNode {
 
         <CameraShake intensity={0.8} />
 
-        <mesh ref={torusRef} position={[1, 0.5, 0]} castShadow>
+        <mesh ref={torusRef} position={[1, 0.5, 0]} onPointerOver={()=> {alert("cum")}} castShadow>
             <torusGeometry args={[1, 0.2, 3, 20, 20]} />
             <meshStandardMaterial />
         </mesh>

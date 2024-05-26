@@ -12,3 +12,11 @@
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
   }
+
+
+@layer components {
+    .centered{
+        @apply flex items-center justify-center flex-col
+    }
+
+}
