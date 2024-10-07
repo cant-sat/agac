@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client'
 import Index from './pages/Index.tsx'
 import './index.css'
 import { createHashRouter, RouterProvider } from 'react-router-dom'
+import DataProcessor from './pages/DataProcessor.tsx'
 
 const router = createHashRouter([{
   path: "/",
@@ -10,15 +11,9 @@ const router = createHashRouter([{
   errorElement: (<div className='text-white'>404</div>)
 },{
   path: "/dataProcessor",
-  element: (<div className='text-white'>data</div>)
+  element: (<DataProcessor/>)
 
 }])
-
-ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    
-  </React.StrictMode>,
-) 
 
 
 
