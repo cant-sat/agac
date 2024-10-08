@@ -1,11 +1,15 @@
-import React from 'react'
+import React, { lazy } from 'react'
 import ReactDOM from 'react-dom/client'
-import Index from './pages/Index.tsx'
 import './index.css'
 import { createHashRouter, RouterProvider } from 'react-router-dom'
-import DataProcessor from './pages/DataProcessor.tsx'
-import RocketMotors from './pages/RocketMotors.tsx'
-import Rockets from './pages/Rockets.tsx'
+import { Suspense } from 'react'
+import Loading from './components/loading.tsx'
+
+// Lazy load components
+const Index = lazy(() => import('./pages/Index.tsx'))
+const DataProcessor = lazy(() => import('./pages/DataProcessor.tsx'))
+const RocketMotors = lazy(() => import('./pages/RocketMotors.tsx'))
+const Rockets = lazy(() => import('./pages/Rockets.tsx'))
 
 const router = createHashRouter([{
   path: "/",
@@ -27,7 +31,9 @@ const router = createHashRouter([{
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <RouterProvider router={router}/>
+    <Suspense fallback={(<Loading/>)}>
+      <RouterProvider router={router}/>
+    </Suspense>
   </React.StrictMode>,
 ) 
 

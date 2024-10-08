@@ -22,6 +22,9 @@ export function Content(): React.ReactNode {
                 width: window.innerWidth,
                 height: window.innerHeight,
             });
+
+            setIsMobile(windowDimensions.height > windowDimensions.width)
+
         };
 
         window.addEventListener('resize', handleResize);
