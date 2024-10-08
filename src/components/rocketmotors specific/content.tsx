@@ -22,6 +22,9 @@ export function Content(): React.ReactNode {
                 width: window.innerWidth,
                 height: window.innerHeight,
             });
+
+            setIsMobile(windowDimensions.height > windowDimensions.width)
+
         };
 
         window.addEventListener('resize', handleResize);
@@ -31,47 +34,23 @@ export function Content(): React.ReactNode {
         };
     }, []);
 
-
+    
 
 
     return (
         <div className="absolute top-0 left-0 w-screen h-screen overflow-y-scroll text-3xl font-light text-justify text-white" id="content" onScroll={(event) => { setScroll(event.currentTarget.scrollTop); setOffset(event.currentTarget.scrollTop) }}>
             <div className="flex flex-col w-screen" >
 
-                <div className="flex flex-col items-center justify-center h-screen select-none ">
-                    <div className="font-thin text-[22vw] h-[21vw] centered">AGAC</div>
-                    <div className="text-[4vh] font-extralight">(not CANT)</div>
+                <div className="flex flex-col items-center justify-center h-screen select-none -translate-y-5">
+                    <div className="font-thin text-[10vw] centered">Rocket Motors</div>
+                    
 
                     {ScrollDown(offset, 75, isMobile)}
                 </div>
 
                 
 
-                <div className="centered h-screen *:m-3 font-light *:p-4">
-                    <div className={isMobile ? 'text-4xl' : 'text-7xl'}>What is AGAC?</div>
-                    <div className={isMobile ? 'text-2xl w-screen' : 'text-4xl w-[70vw]'}>AGAC is just a project where we try to build a rocket motor and see what happens. We eventually want to build a fully functioning rocket that can go up at least a few hundred meters but that will take time. We are planning to work on AGAC during the summer (but there is a chance we will just be too busy or lazy xd)</div>
-                </div>
-
-                
-
-                <div className="centered h-screen *:m-3 font-light *:p-4">
-                    <div className={isMobile ? 'text-4xl' : 'text-7xl'}>Where are we right now?</div>
-                    <div className={isMobile ? 'text-2xl w-screen' : 'text-4xl w-[70vw]'}>{ShortOrLong()}</div>
-                </div>
-
-                
-
-                <div className="centered h-screen *:m-3 font-light *:p-4">
-                    <div className={isMobile ? 'text-4xl' : 'text-7xl'}>Who are we?</div>
-                    <div className={isMobile ? 'text-2xl w-screen' : 'text-4xl w-[70vw]'}>None of your business</div>
-                </div>
-                
-                
-
-                <div className="centered h-screen *:m-3 font-light *:p-4">
-                    <div className={isMobile ? 'text-4xl' : 'text-7xl'}>What does "AGAC" mean?</div>
-                    <div className={isMobile ? 'text-2xl w-screen' : 'text-4xl w-[70vw]'}>The name AGAC was chosen by GPT-2 and it stands for Advanced A.G.A (dont ask what A.G.A is we have no clue) but the name stuck so now its agac.</div>
-                </div>
+              
 
 
             </div>
