@@ -35,10 +35,19 @@ export function Content(): React.ReactNode {
     }, []);
 
     
+    const handleScroll = (event: React.UIEvent<HTMLDivElement, UIEvent>) => {
+        const { scrollTop, scrollHeight, clientHeight } = event.currentTarget;
 
+        const maxScrollTop = scrollHeight - clientHeight;
+
+        const percentage = scrollTop / maxScrollTop;
+
+        setScroll(percentage * 100); 
+        setOffset(event.currentTarget.scrollTop)
+    }
 
     return (
-        <div className="absolute top-0 left-0 w-screen h-screen overflow-y-scroll text-3xl font-light text-justify text-white" id="content" onScroll={(event) => { setScroll(event.currentTarget.scrollTop); setOffset(event.currentTarget.scrollTop) }}>
+        <div className="absolute top-0 left-0 w-screen h-screen overflow-y-scroll text-3xl font-light text-justify text-white" id="content" onScroll={handleScroll}>
             <div className="flex flex-col w-screen" >
 
                 <div className="flex flex-col items-center justify-center h-screen select-none -translate-y-5">
@@ -106,3 +115,7 @@ function ShortOrLong(): React.ReactNode {
 
     return <>ERROR</>
 }
+
+
+
+export default Content

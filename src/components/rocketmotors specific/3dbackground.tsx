@@ -1,6 +1,7 @@
-import React from "react";
+import React, { lazy } from "react";
 import { Canvas } from "@react-three/fiber"
-import { Experience } from "./experience"
+
+const Experience = lazy(()=>import("./experience"))
 
 
 export function Background():React.ReactNode{
@@ -9,3 +10,5 @@ export function Background():React.ReactNode{
     <Experience/>
   </Canvas>)
 }
+
+export default Background

@@ -1,21 +1,30 @@
-import React, { useEffect, useState, useRef } from "react";
-import { CameraShake} from "@react-three/drei";
-import { Vector3, Mesh, BufferGeometry, Material, Color} from 'three';
+import React, { useEffect, useState, useRef, Ref } from "react";
+import { CameraShake, DragControls, FirstPersonControls, OrbitControls, PivotControls, useGLTF} from "@react-three/drei";
+import { Vector3, Mesh, BufferGeometry, Material, Color, WireframeGeometry, MeshStandardMaterial} from 'three';
 import { getRandomNumber, getRandomVector3 } from "../../utility/random";
 import { useThree, useFrame } from "@react-three/fiber";
+import { FlyControls } from "three/examples/jsm/Addons.js";
 
 export let setScroll: Function;
 
-// render the stars
-const stars: React.ReactNode = (
-    <>
-        {
-        Array.from({ length: 300 }, () =>
-            star(getRandomVector3(50, 70, true), 0.2, 0.3)
-        )}
-    </>)
+const modelUrls: { [key: string]: string } = {
+    EndCap: "./3dmodels/endcap.gltf",
+    LoadCell: "./3dmodels/loadcell.gltf",
+    LoadCellAdapter: "./3dmodels/loadcelladapter.gltf",
+    RocketBody: "./3dmodels/rocketbody.gltf",
+    TestStand: "./3dmodels/teststand.gltf"
+};
 
-export function Experience(): React.ReactNode {
+const modelRefs: { [key: string]: React.RefObject<Mesh> } = {};
+
+const modelKeyFrames : {[key: string] : {[keyFrame: number] : {position : Vector3, rotation : Vector3}}} = {
+    EndCap : {
+        100 : {position: new Vector3(0,0,0), rotation : new Vector3(0,0,0)}
+    }
+
+}
+
+function Experience(): React.ReactNode {
 
     // scroll offset
     const [offset, setOffset] = useState(0)
@@ -32,16 +41,15 @@ export function Experience(): React.ReactNode {
         
     }, [camera, offset]);
 
-    // rotate the torus
-    const torusRef = useRef<Mesh<BufferGeometry, Material | Material[]>>(null)
 
-    // update every frame
-    useFrame(() => {
-        if (torusRef.current) {
-            torusRef.current.rotation.x += 0.01 * ((offset + 500) / 1000)
-            torusRef.current.rotation.y += 0.01 * ((offset + 500) / 1000)
+
+
+    //GLTF models
+    for (const key in modelUrls){
+        if(modelUrls[key]){
+            
         }
-    })
+    }
 
     return (<>
 
@@ -53,12 +61,7 @@ export function Experience(): React.ReactNode {
         />
 
 
-        <CameraShake intensity={0.8} />
-
-        <mesh ref={torusRef} position={[1, 0.5, 0]} castShadow>
-            <torusGeometry args={[1, 0.2, 3, 20, 20]} />
-            <meshStandardMaterial />
-        </mesh>
+        <CameraShake intensity={0.3} />
 
 
         <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -1, 0]} receiveShadow>
@@ -66,20 +69,40 @@ export function Experience(): React.ReactNode {
             <meshStandardMaterial />
         </mesh>
 
-
-
-        {stars}
+        <Models/>
 
     </>)
 }
 
-function star(pos: Vector3, minSize: number = 0.5, maxSize: number = 0.5): React.ReactNode {
+
+function Models(): JSX.Element{
+    return (
+        <>
+            {Object.entries(modelUrls).map(([name, url]) => {
+                if (!modelRefs[name]) {
+                    modelRefs[name] = useRef<Mesh>(null);
+                }
+
+                // Use useGLTF to load the model
+                const { scene } = useGLTF(url);
 
 
-    return (<>
-        <mesh position={pos}>
-            <sphereGeometry args={[getRandomNumber(minSize, maxSize), 32, 32]} />
-            <meshBasicMaterial />
-        </mesh>
-    </>)
+
+
+                // Render each model as a primitive
+                return (
+                    <primitive
+                        key={name}
+                        object={scene}
+                        ref={modelRefs[name]}
+                        position={[Math.random() * 10 - 5, 0, Math.random() * 10 - 5]} // Example random positions
+                        scale={[10, 10, 10]} // Adjust scale if needed
+                        
+                    />
+                );
+            })}
+        </>
+    );
 }
+
+export default Experience

@@ -3,7 +3,7 @@ import { setScroll } from "./experience";
 import { MdKeyboardDoubleArrowDown } from "react-icons/md";
 
 
-export function Content(): React.ReactNode {
+function Content(): React.ReactNode {
     const [offset, setOffset] = useState(0)
 
 
@@ -130,3 +130,9 @@ function ShortOrLong(): React.ReactNode {
 
     return <>ERROR</>
 }
+
+
+
+
+
+export default Content

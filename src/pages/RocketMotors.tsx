@@ -9,7 +9,7 @@ function RocketMotors(): JSX.Element {
     <>
       
         <Background/>
-        <Content/>
+        {/*<Content/>*/}
       
     </>
   )
