@@ -45,25 +45,20 @@ export class KeyFrame {
             throw "you should not have a lenght of 0 in keyframes"
         }
 
-        if(keyframes.sorted.length == 1){
-            return new NeighbouringKeyFrames(keyframes[keyframes.sorted[0]], keyframes[keyframes.sorted[0]])
-        }
-
-
         let i = 0
 
         if(keyframes.sorted[keyframes.sorted.length-1] <= t){
-            return new NeighbouringKeyFrames(keyframes[keyframes.sorted[keyframes.sorted.length-1]], keyframes[keyframes.sorted[keyframes.sorted.length-1]])
+            return new NeighbouringKeyFrames(keyframes[keyframes.sorted[keyframes.sorted.length-1]],keyframes.sorted[keyframes.sorted.length-1], keyframes[keyframes.sorted[keyframes.sorted.length-1]], keyframes.sorted[keyframes.sorted.length-1])
         }
-        if(keyframes.sorted[keyframes.sorted.length-1] > t){
-            return new NeighbouringKeyFrames(keyframes[keyframes.sorted[0]], keyframes[keyframes.sorted[0]])
+        if(keyframes.sorted[0] > t){
+            return new NeighbouringKeyFrames(keyframes[keyframes.sorted[0]],keyframes.sorted[0], keyframes[keyframes.sorted[0]],keyframes.sorted[0])
         }
 
 
 
         while (i < keyframes.sorted.length){
             if(keyframes.sorted[i] <= t && keyframes.sorted[i+1] > t){
-                return new NeighbouringKeyFrames(keyframes[keyframes.sorted[i]], keyframes[keyframes.sorted[i+1]])
+                return new NeighbouringKeyFrames(keyframes[keyframes.sorted[i]], keyframes.sorted[i], keyframes[keyframes.sorted[i+1]], keyframes.sorted[i+1])
             }
 
             i++
@@ -77,12 +72,17 @@ export class KeyFrame {
 
 class NeighbouringKeyFrames {
     public current: KeyFrame
+    public currentKey : number
 
     public next: KeyFrame
+    public nextKey : number
 
 
-    constructor(cur: KeyFrame, next: KeyFrame) {
+    constructor(cur: KeyFrame,curKey : number, next: KeyFrame,nextKey : number) {
         this.current = cur
         this.next = next
+
+        this.currentKey = curKey
+        this.nextKey = nextKey
     }
 }

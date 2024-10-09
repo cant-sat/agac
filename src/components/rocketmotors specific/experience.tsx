@@ -1,10 +1,11 @@
 import React, { useEffect, useState, useRef, Ref } from "react";
 import { CameraShake, DragControls, FirstPersonControls, OrbitControls, PivotControls, useGLTF} from "@react-three/drei";
-import { Vector3, Mesh, BufferGeometry, Material, Color, WireframeGeometry, MeshStandardMaterial} from 'three';
+import { Vector3, Mesh, BufferGeometry, Material, Color, WireframeGeometry, MeshStandardMaterial, Euler, MeshBasicMaterial} from 'three';
 import { getRandomNumber, getRandomVector3 } from "../../utility/random";
 import { useThree, useFrame } from "@react-three/fiber";
 import { FlyControls } from "three/examples/jsm/Addons.js";
 import { KeyFrame } from "../../utility/keyframing";
+import { lerpVector3, Vector3toEuler } from "../../utility/math";
 
 export let setScroll: Function;
 
@@ -18,18 +19,26 @@ const modelUrls: { [key: string]: string } = {
 
 const modelRefs: { [key: string]: React.RefObject<Mesh> } = {};
 
-const modelKeyFrames : {[key: string] : {[keyFrames: number] : KeyFrame, sorted? : Number[]}} = {
+const modelKeyFrames : {[key: string] : {[keyFrames: number] : KeyFrame, sorted? : number[]}} = {
     EndCap : {
         0   : new KeyFrame({
-            position : new Vector3(),
-            rotation : new Vector3()
+            position : new Vector3(0,0,0),
+            rotation : new Vector3(0,0,0)
+        }),
+        50 : new KeyFrame({
+            position : new Vector3(1,1,1),
+            rotation : new Vector3(0, Math.PI, 0)
         }),
         100 : new KeyFrame({
-            position : new Vector3(),
-            rotation : new Vector3()
-        })
+            position : new Vector3(1,0,0),
+            rotation : new Vector3(0,0,0)
+        }),
+        
     }
+}
 
+const modelMaterials : {[key : string] : Material} = {
+    EndCap : new MeshBasicMaterial({color: "#ff00ff"})
 }
 
 function Experience(): React.ReactNode {
@@ -40,6 +49,7 @@ function Experience(): React.ReactNode {
 
     // change the position of the camera based on scroling
     const { camera } = useThree()
+
     
 
     useEffect(() => {
@@ -49,10 +59,25 @@ function Experience(): React.ReactNode {
     }, [offset]);
 
     useFrame(()=>{
-        modelKeyFrames
+        for(const key in modelKeyFrames){
+            let t = KeyFrame.currentKeyFrames(modelKeyFrames[key], offset)
+
+            if(!modelRefs[key] || !modelRefs[key].current){
+                continue
+            }
+
+            
+
+            let div : number= t.nextKey - t.currentKey == 0 ? 1 : t.nextKey - t.currentKey
+
+            modelRefs[key].current.position.copy(lerpVector3(t.current.position, t.next.position, (offset-t.currentKey)/div))
+            modelRefs[key].current.rotation.copy(Vector3toEuler(lerpVector3(t.current.rotation, t.next.rotation, (offset-t.currentKey)/div)))
+
+            
+        }
     })
 
-
+    const ModelsHolder = Models()
 
     return (<>
 
@@ -72,8 +97,7 @@ function Experience(): React.ReactNode {
             <meshStandardMaterial />
         </mesh>
 
-        <Models/>
-
+        {ModelsHolder}
     </>)
 }
 
@@ -98,7 +122,6 @@ function Models(): JSX.Element{
                         key={name}
                         object={scene}
                         ref={modelRefs[name]}
-                        position={[Math.random() * 10 - 5, 0, Math.random() * 10 - 5]} // Example random positions
                         scale={[10, 10, 10]} // Adjust scale if needed
                         
                     />

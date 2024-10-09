@@ -57,7 +57,12 @@ export function Content(): React.ReactNode {
                     {ScrollDown(offset, 75, isMobile)}
                 </div>
 
-                
+                <div className="min-h-screen">
+                    1
+                </div>
+                <div className="min-h-screen">
+                    2
+                </div>
 
               
 
