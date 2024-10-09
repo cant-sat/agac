@@ -4,6 +4,7 @@ import { Vector3, Mesh, BufferGeometry, Material, Color, WireframeGeometry, Mesh
 import { getRandomNumber, getRandomVector3 } from "../../utility/random";
 import { useThree, useFrame } from "@react-three/fiber";
 import { FlyControls } from "three/examples/jsm/Addons.js";
+import { KeyFrame } from "../../utility/keyframing";
 
 export let setScroll: Function;
 
@@ -17,10 +18,16 @@ const modelUrls: { [key: string]: string } = {
 
 const modelRefs: { [key: string]: React.RefObject<Mesh> } = {};
 
-const modelKeyFrames : {[key: string] : {[keyFrame: number] : {position : Vector3, rotation : Vector3, update? : Function}}} = {
+const modelKeyFrames : {[key: string] : {[keyFrames: number] : KeyFrame, sorted? : Number[]}} = {
     EndCap : {
-        0   : {position: new Vector3(0,0,0), rotation : new Vector3(0,0,0)},
-        100 : {position: new Vector3(0,0,0), rotation : new Vector3(0,0,0)}
+        0   : new KeyFrame({
+            position : new Vector3(),
+            rotation : new Vector3()
+        }),
+        100 : new KeyFrame({
+            position : new Vector3(),
+            rotation : new Vector3()
+        })
     }
 
 }
@@ -46,13 +53,6 @@ function Experience(): React.ReactNode {
     })
 
 
-
-    //GLTF models
-    for (const key in modelUrls){
-        if(modelUrls[key]){
-            
-        }
-    }
 
     return (<>
 
