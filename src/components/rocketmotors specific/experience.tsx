@@ -17,8 +17,9 @@ const modelUrls: { [key: string]: string } = {
 
 const modelRefs: { [key: string]: React.RefObject<Mesh> } = {};
 
-const modelKeyFrames : {[key: string] : {[keyFrame: number] : {position : Vector3, rotation : Vector3}}} = {
+const modelKeyFrames : {[key: string] : {[keyFrame: number] : {position : Vector3, rotation : Vector3, update? : Function}}} = {
     EndCap : {
+        0   : {position: new Vector3(0,0,0), rotation : new Vector3(0,0,0)},
         100 : {position: new Vector3(0,0,0), rotation : new Vector3(0,0,0)}
     }
 
@@ -32,15 +33,17 @@ function Experience(): React.ReactNode {
 
     // change the position of the camera based on scroling
     const { camera } = useThree()
-    camera.position.set(0, 0, (offset + 600) / 200)
     
 
     useEffect(() => {
         // Set the camera position
-        camera.position.set(0, 0, (offset + 600) / 200); // Adjust the position as needed
         
-    }, [camera, offset]);
+        
+    }, [offset]);
 
+    useFrame(()=>{
+        modelKeyFrames
+    })
 
 
 

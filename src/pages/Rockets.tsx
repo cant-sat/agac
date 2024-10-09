@@ -1,15 +1,14 @@
-import { Background } from "../components/index specific/3dbackground"
-import { Content } from "../components/index specific/content"
+
 
 function Rockets(): JSX.Element {
 
 
   return (
-    <>
+    <div className="text-white">
       
-        No full functioning rockets yet:((
+        No fully functioning rockets yet:((
       
-    </>
+    </div>
   )
 }
 
