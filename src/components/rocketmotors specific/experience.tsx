@@ -3,7 +3,7 @@ import { CameraShake, DragControls, FirstPersonControls, OrbitControls, PivotCon
 import { Vector3, Mesh, BufferGeometry, Material, Color, WireframeGeometry, MeshStandardMaterial, Euler, MeshBasicMaterial, MeshNormalMaterial } from 'three';
 import { getRandomNumber, getRandomVector3 } from "../../utility/random";
 import { useThree, useFrame } from "@react-three/fiber";
-import { FlyControls } from "three/examples/jsm/Addons.js";
+import { FlyControls, SimplifyModifier } from "three/examples/jsm/Addons.js";
 import { KeyFrame } from "../../utility/keyframing";
 import { lerpVector3, Vector3toEuler } from "../../utility/math";
 import { WireframeMaterial } from "@react-three/drei/materials/WireframeMaterial";
@@ -27,7 +27,7 @@ const modelKeyFrames: { [key: string]: { [keyFrames: number]: KeyFrame, sorted?:
             rotation: new Vector3(-90, 0, 0)
         }),
         100: new KeyFrame({
-            position: new Vector3(0, 0, 0),
+            position: new Vector3(0, 0, 2),
             rotation: new Vector3(0, 0, 0)
         }),
     },
@@ -38,7 +38,7 @@ const modelKeyFrames: { [key: string]: { [keyFrames: number]: KeyFrame, sorted?:
             rotation: new Vector3(-90, 0, 0)
         }),
         100: new KeyFrame({
-            position: new Vector3(0, 0, 0),
+            position: new Vector3(0, 0, 2),
             rotation: new Vector3(0, 0, 0)
         }),
     },
@@ -50,14 +50,24 @@ const modelKeyFrames: { [key: string]: { [keyFrames: number]: KeyFrame, sorted?:
         }),
         100: new KeyFrame({
             position: new Vector3(0, 0, 0),
-            rotation: new Vector3(0, 0, 0)
+            rotation: new Vector3(0, 0, 2)
         }),
     }
 }
 
 const modelMaterials: { [key: string]: Material } = {
-    EndCap: new MeshBasicMaterial({ blendColor: "#ff00ff", wireframe: true })
+    EndCap: new MeshBasicMaterial({color: "#39FF14" , wireframe: true }),  
+    RocketBody: new MeshBasicMaterial({color: "#39FF14" , wireframe: true }),
+    LoadCellAdapter: new MeshBasicMaterial({color: "#39FF14" , wireframe: true }),
+
 }
+
+// value is percantage of faces removed
+const simplify : {[key : string] : number | null} = {
+    EndCap : 0.6
+}
+
+const modifier = new SimplifyModifier
 
 function Experience(): React.ReactNode {
 
@@ -67,8 +77,6 @@ function Experience(): React.ReactNode {
 
     // change the position of the camera based on scroling
     const { camera } = useThree()
-
-    console.log(camera.position)
 
     let ModelsHolder: JSX.Element = Models()
 
@@ -144,9 +152,22 @@ function Models(): JSX.Element {
                 // Traverse the scene and apply the material to all meshes
                 scene.traverse((child) => {
                     if ((child as Mesh).isMesh) {
-                        (child as Mesh).material = mat;
+                        console.log("asd")
+
+                        const mesh = child as Mesh;
+
+                        if(simplify[name] != null){
+                        // Specify the simplification percentage (e.g., 0.5 means 50% of the original faces)
+                        mesh.geometry = modifier.modify(mesh.geometry, Math.floor( mesh.geometry.attributes.position.count * simplify[name] ));
+                        // Apply the simplified geometry to the mesh
+                        }
+
+
+                        mesh.material = mat;
                     }
-                });
+                })
+
+                simplify[name] = null
 
                 // Render each model as a primitive
                 return (
