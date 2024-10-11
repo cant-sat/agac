@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { setScroll } from "./experience";
 import { MdKeyboardDoubleArrowDown } from "react-icons/md";
+import DataChart from "../charts";
 
 
 export function Content(): React.ReactNode {
@@ -58,7 +59,7 @@ export function Content(): React.ReactNode {
                 </div>
 
                 <div className="min-h-screen">
-                    1
+                    <DataChart dataUrls={["/data/reprocessedforce.txt", "/data/ogforce.txt"]}/>
                 </div>
                 <div className="min-h-screen">
                     2
