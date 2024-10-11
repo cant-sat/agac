@@ -59,7 +59,7 @@ export function Content(): React.ReactNode {
                 </div>
 
                 <div className="min-h-screen">
-                    <DataChart dataUrls={["/data/reprocessedforce.txt", "/data/ogforce.txt"]}/>
+                    <DataChart dataUrls={["/data/reprocessedforce.txt", "/data/ogforce.txt"]} dataUrlLabels={{}}/>
                 </div>
                 <div className="min-h-screen">
                     2
