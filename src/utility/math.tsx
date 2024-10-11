@@ -10,5 +10,10 @@ export function lerpVector3(a : Vector3, b : Vector3, t : number) : Vector3{
 }
 
 export function Vector3toEuler(a : Vector3) : Euler{
-    return new Euler(a.x, a.y, a.z)
+    return new Euler(DegToRad(a.x), DegToRad(a.y), DegToRad(a.z))
+}
+
+
+export function DegToRad(a : number){
+    return a /( 180 / Math.PI)
 }
