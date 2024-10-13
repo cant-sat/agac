@@ -152,7 +152,6 @@ function Models(): JSX.Element {
                 // Traverse the scene and apply the material to all meshes
                 scene.traverse((child) => {
                     if ((child as Mesh).isMesh) {
-                        console.log("asd")
 
                         const mesh = child as Mesh;
 
