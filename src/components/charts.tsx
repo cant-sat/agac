@@ -3,7 +3,7 @@ import { LineChart, Legend, Tooltip, XAxis, YAxis, Line, CartesianGrid, Responsi
 
 interface chartData {
     dataUrls: string[],
-    yAxisUrl?: string,
+    yAxisUrl: string,
     dataUrlLabels: { [key: string]: string }
 }
 
@@ -12,8 +12,6 @@ let cache: { [key: string]: number[] } = {}
 function DataChart({ dataUrls, yAxisUrl, dataUrlLabels }: chartData): JSX.Element {
     const [chartData, setChartData] = useState<{ [key: string]: number }[]>([])
     const [lines, setLines] = useState<string[]>([])
-    const [yAxis, setYAxis] = useState<string>()
-
 
     useEffect(() => {
         // Fetch and prepare the data
@@ -23,9 +21,9 @@ function DataChart({ dataUrls, yAxisUrl, dataUrlLabels }: chartData): JSX.Elemen
 
             for (const dataUrl of dataUrls) {
                 try {
-                    let response: string = ""
+                    
                     if (!cache[dataUrl]) {
-                        response = await fetch(dataUrl, { method: "get" }).then((body) => body.text())
+                        let response = await fetch(dataUrl, { method: "get" }).then((body) => body.text())
                         cache[dataUrl] = JSON.parse(response)
                     }
 
@@ -52,9 +50,34 @@ function DataChart({ dataUrls, yAxisUrl, dataUrlLabels }: chartData): JSX.Elemen
 
         const fetchYAxis = async () => {
             let updatedChartData: { [key: string]: number }[] = chartData
+
+            try {
+                if (!cache[yAxisUrl]) {
+                    let response = await fetch(yAxisUrl, { method: "get" }).then((body) => body.text())
+                    cache[yAxisUrl] = JSON.parse(response)
+                }
+
+                const data: number[] = cache[yAxisUrl]
+
+                // Ensure chartData has the correct number of entries
+                data.forEach((value, i) => {
+                    if (!updatedChartData[i]) {
+                        updatedChartData[i] = {}
+                    }
+                    updatedChartData[i][yAxisUrl] = value
+
+                    
+                })
+            } catch (error) {
+                console.error(`Failed to fetch data from ${yAxisUrl}`, error)
+            }
+
+            setChartData(updatedChartData)
+
+        
         }
 
-
+        fetchYAxis()
         fetchData()
     }, [dataUrls, dataUrlLabels, yAxisUrl])
 
@@ -66,7 +89,7 @@ function DataChart({ dataUrls, yAxisUrl, dataUrlLabels }: chartData): JSX.Elemen
             <LineChart data={chartData} width={500} height={300} className="text-black">
                 <Legend stroke="#ffffff" />
                 <Tooltip />
-                <XAxis stroke="#ffffff" dataKey={yAxis}/>
+                <XAxis stroke="#ffffff" dataKey={xAxisUrl}/>
                 <YAxis stroke="#ffffff" />
 
                 {lines.map((key) =>
