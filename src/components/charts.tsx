@@ -12,6 +12,7 @@ let cache: { [key: string]: number[] } = {}
 function DataChart({ dataUrls, yAxisUrl, dataUrlLabels }: chartData): JSX.Element {
     const [chartData, setChartData] = useState<{ [key: string]: number }[]>([])
     const [lines, setLines] = useState<string[]>([])
+    const [yAxis, setYAxis] = useState<string>()
 
 
     useEffect(() => {
@@ -49,8 +50,13 @@ function DataChart({ dataUrls, yAxisUrl, dataUrlLabels }: chartData): JSX.Elemen
             setLines(updatedLines)
         }
 
+        const fetchYAxis = async () => {
+            let updatedChartData: { [key: string]: number }[] = chartData
+        }
+
+
         fetchData()
-    }, [dataUrls, dataUrlLabels])
+    }, [dataUrls, dataUrlLabels, yAxisUrl])
 
 
 
@@ -60,7 +66,7 @@ function DataChart({ dataUrls, yAxisUrl, dataUrlLabels }: chartData): JSX.Elemen
             <LineChart data={chartData} width={500} height={300} className="text-black">
                 <Legend stroke="#ffffff" />
                 <Tooltip />
-                <XAxis stroke="#ffffff" />
+                <XAxis stroke="#ffffff" dataKey={yAxis}/>
                 <YAxis stroke="#ffffff" />
 
                 {lines.map((key) =>
