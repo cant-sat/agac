@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { CameraShake, Environment} from "@react-three/drei";
+import { CameraShake,} from "@react-three/drei";
 import { Mesh, BufferGeometry, Material, Color} from 'three';
 import { useThree, useFrame } from "@react-three/fiber";
 import Stars from "../../utility/stars";

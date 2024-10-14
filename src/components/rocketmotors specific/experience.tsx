@@ -1,12 +1,10 @@
-import React, { useEffect, useState, useRef, Ref } from "react";
-import { CameraShake, DragControls, FirstPersonControls, OrbitControls, PivotControls, useGLTF } from "@react-three/drei";
-import { Vector3, Mesh, BufferGeometry, Material, Color, WireframeGeometry, MeshStandardMaterial, Euler, MeshBasicMaterial, MeshNormalMaterial } from 'three';
-import { getRandomNumber, getRandomVector3 } from "../../utility/random";
+import React, { useEffect, useState, useRef } from "react";
+import { CameraShake,  useGLTF } from "@react-three/drei";
+import { Vector3, Mesh,  Material, Color, MeshBasicMaterial, MeshNormalMaterial } from 'three';
 import { useThree, useFrame } from "@react-three/fiber";
-import { FlyControls, SimplifyModifier } from "three/examples/jsm/Addons.js";
+import {  SimplifyModifier } from "three/examples/jsm/Addons.js";
 import { KeyFrame } from "../../utility/keyframing";
 import { lerpVector3, Vector3toEuler } from "../../utility/math";
-import { WireframeMaterial } from "@react-three/drei/materials/WireframeMaterial";
 
 export let setScroll: Function;
 
@@ -64,7 +62,8 @@ const modelMaterials: { [key: string]: Material } = {
 
 // value is percantage of faces removed
 const simplify : {[key : string] : number | null} = {
-    EndCap : 0.6
+    EndCap : 0.6,
+    LoadCellAdapter : 0.6
 }
 
 const modifier = new SimplifyModifier
@@ -85,13 +84,13 @@ function Experience(): React.ReactNode {
         // Set the camera position
 
 
-    }, [offset]);
+    }, [offset, camera]);
 
     useFrame(() => {
         for (const key in modelKeyFrames) {
             let t = KeyFrame.currentKeyFrames(modelKeyFrames[key], offset)
 
-            if (!modelRefs[key] || !modelRefs[key].current) {
+            if (!modelRefs[key] || modelRefs[key].current  == null) {
                 continue
             }
 
@@ -99,8 +98,8 @@ function Experience(): React.ReactNode {
 
             let div: number = t.nextKey - t.currentKey == 0 ? 1 : t.nextKey - t.currentKey
 
-            modelRefs[key].current.position.copy(lerpVector3(t.current.position, t.next.position, (offset - t.currentKey) / div))
-            modelRefs[key].current.rotation.copy(Vector3toEuler(lerpVector3(t.current.rotation, t.next.rotation, (offset - t.currentKey) / div)))
+            modelRefs[key].current!.position.copy(lerpVector3(t.current.position, t.next.position, (offset - t.currentKey) / div))
+            modelRefs[key].current!.rotation.copy(Vector3toEuler(lerpVector3(t.current.rotation, t.next.rotation, (offset - t.currentKey) / div)))
 
 
         }
@@ -157,16 +156,16 @@ function Models(): JSX.Element {
 
                         if(simplify[name] != null){
                         // Specify the simplification percentage (e.g., 0.5 means 50% of the original faces)
-                        mesh.geometry = modifier.modify(mesh.geometry, Math.floor( mesh.geometry.attributes.position.count * simplify[name] ));
+                        mesh.geometry = modifier.modify(mesh.geometry, Math.floor( mesh.geometry.attributes.position.count * simplify[name]! ));
                         // Apply the simplified geometry to the mesh
+                        
                         }
-
 
                         mesh.material = mat;
                     }
                 })
-
                 simplify[name] = null
+                
 
                 // Render each model as a primitive
                 return (

@@ -1,12 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { setScroll } from "./experience";
 import { MdKeyboardDoubleArrowDown } from "react-icons/md";
 import DataChart from "../charts";
 
 
+
+
 export function Content(): React.ReactNode {
     const [offset, setOffset] = useState(0)
 
+    
 
     // window dimension
     const [windowDimensions, setWindowDimensions] = useState({
@@ -47,6 +50,16 @@ export function Content(): React.ReactNode {
         setOffset(event.currentTarget.scrollTop)
     }
 
+    const chart = useMemo(() => (
+        <DataChart
+            dataUrls={["/data/cutreprocessedforce.txt"]}
+            dataUrlLabels={{"/data/cutreprocessedforce.txt" : "Force"}}
+            xAxisUrl="/data/cutreprocessedtimestamp.txt"
+        />
+    ), []);
+    
+
+
     return (
         <div className="absolute top-0 left-0 w-screen h-screen overflow-y-scroll text-3xl font-light text-justify text-white" id="content" onScroll={handleScroll}>
             <div className="flex flex-col w-screen" >
@@ -58,8 +71,8 @@ export function Content(): React.ReactNode {
                     {ScrollDown(offset, 75, isMobile)}
                 </div>
 
-                <div className="min-h-screen">
-                    <DataChart dataUrls={["/data/reprocessedforce.txt", "/data/ogforce.txt"]} dataUrlLabels={{}} xAxisUrl="/data/timestamp.txt"/>
+                <div className="h-screen w-screen">
+                    {chart}
                 </div>
                 <div className="min-h-screen">
                     2
@@ -100,27 +113,6 @@ function ScrollDown(scroll: number, disappear: number, isMobile: boolean) {
 }
 
 
-function ShortOrLong(): React.ReactNode {
-    const [answer, setter] = useState("") // "short" or "long"
-
-
-    if (answer == "") {
-        return (<div className="centered underline hover:cursor-pointer *:m-6">
-            <div onClick={() => { setter("short") }} >Short answer</div>
-            <div onClick={() => { setter("long") }} >Long answer</div>
-        </div>)
-    }
-    if (answer == "short") {
-        return (<div className="centered">No where, we are no where</div>)
-    }
-    if (answer == "long") {
-        return (<div className="centered">
-            We got all of the 3D plans for the rocket test stand where we will test our rocket motors. The propellent we will be using with it will be simple black powder. We already have the loadcell for the rocket test stand working we just have to save the data we gather somehow, the current plan is to write to an SD card but we want to change to saving all the data to our own server.
-        </div>)
-    }
-
-    return <>ERROR</>
-}
 
 
 

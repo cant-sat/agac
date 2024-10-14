@@ -1,22 +1,22 @@
-import { useEffect, useState } from "react"
-import { LineChart, Legend, Tooltip, XAxis, YAxis, Line, CartesianGrid, ResponsiveContainer } from "recharts"
+import { useEffect,  useState } from "react"
+import { LineChart, Legend, Tooltip, XAxis, YAxis, Line, CartesianGrid, ResponsiveContainer, ReferenceLine } from "recharts"
 
 interface chartData {
     dataUrls: string[],
-    yAxisUrl: string,
+    xAxisUrl: string,
     dataUrlLabels: { [key: string]: string }
 }
 
 let cache: { [key: string]: number[] } = {}
 
-function DataChart({ dataUrls, yAxisUrl, dataUrlLabels }: chartData): JSX.Element {
+function DataChart({ dataUrls, xAxisUrl, dataUrlLabels }: chartData): JSX.Element {
     const [chartData, setChartData] = useState<{ [key: string]: number }[]>([])
     const [lines, setLines] = useState<string[]>([])
 
     useEffect(() => {
         // Fetch and prepare the data
         const fetchData = async () => {
-            let updatedChartData: { [key: string]: number }[] = []
+            let updatedChartData: { [key: string]: number }[] = chartData
             let updatedLines: string[] = []
 
             for (const dataUrl of dataUrls) {
@@ -48,28 +48,28 @@ function DataChart({ dataUrls, yAxisUrl, dataUrlLabels }: chartData): JSX.Elemen
             setLines(updatedLines)
         }
 
-        const fetchYAxis = async () => {
+        const fetchXAxis = async () => {
             let updatedChartData: { [key: string]: number }[] = chartData
 
             try {
-                if (!cache[yAxisUrl]) {
-                    let response = await fetch(yAxisUrl, { method: "get" }).then((body) => body.text())
-                    cache[yAxisUrl] = JSON.parse(response)
+                if (!cache[xAxisUrl]) {
+                    let response = await fetch(xAxisUrl, { method: "get" }).then((body) => body.text())
+                    cache[xAxisUrl] = JSON.parse(response)
                 }
 
-                const data: number[] = cache[yAxisUrl]
+                const data: number[] = cache[xAxisUrl]
 
                 // Ensure chartData has the correct number of entries
                 data.forEach((value, i) => {
                     if (!updatedChartData[i]) {
                         updatedChartData[i] = {}
                     }
-                    updatedChartData[i][yAxisUrl] = value
+                    updatedChartData[i][xAxisUrl] = value
 
                     
                 })
             } catch (error) {
-                console.error(`Failed to fetch data from ${yAxisUrl}`, error)
+                console.error(`Failed to fetch data from ${xAxisUrl}`, error)
             }
 
             setChartData(updatedChartData)
@@ -77,20 +77,20 @@ function DataChart({ dataUrls, yAxisUrl, dataUrlLabels }: chartData): JSX.Elemen
         
         }
 
-        fetchYAxis()
+        fetchXAxis()
         fetchData()
-    }, [dataUrls, dataUrlLabels, yAxisUrl])
 
-
-
+    }, [dataUrls, dataUrlLabels, xAxisUrl])
 
     return (
-        <ResponsiveContainer width="100%" height={500}>
-            <LineChart data={chartData} width={500} height={300} className="text-black">
+        <ResponsiveContainer width="100%" height="100%">
+            <LineChart data={chartData}  className="text-black" margin={{bottom: 5, right: 5, top: 5, left: 5}}>
                 <Legend stroke="#ffffff" />
                 <Tooltip />
-                <XAxis stroke="#ffffff" dataKey={xAxisUrl}/>
+                <XAxis stroke="#ffffff" dataKey={xAxisUrl} minTickGap={10} padding={{left: 30, right: 30}}/>
                 <YAxis stroke="#ffffff" />
+
+                <ReferenceLine/>
 
                 {lines.map((key) =>
 
@@ -98,6 +98,8 @@ function DataChart({ dataUrls, yAxisUrl, dataUrlLabels }: chartData): JSX.Elemen
 
                 )}
 
+                <CartesianGrid strokeDasharray="1 3" stroke="#444444"/>
+                <ReferenceLine y={4000} label="Max" stroke="red" strokeDasharray="3 3" />
             </LineChart>
         </ResponsiveContainer>
     )
