@@ -72,10 +72,11 @@ export function Content(): React.ReactNode {
                 </div>
 
                 <div className="h-screen w-screen">
+                    Data from the first launch
                     {chart}
                 </div>
                 <div className="min-h-screen">
-                    2
+                    The Propellant
                 </div>
 
               
