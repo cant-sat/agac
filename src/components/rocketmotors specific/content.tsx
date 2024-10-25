@@ -50,11 +50,19 @@ export function Content(): React.ReactNode {
         setOffset(event.currentTarget.scrollTop)
     }
 
-    const chart = useMemo(() => (
+    const chart1 = useMemo(() => (
         <DataChart
-            dataUrls={["/data/cutreprocessedforce.txt"]}
-            dataUrlLabels={{"/data/cutreprocessedforce.txt" : "Force"}}
-            xAxisUrl="/data/cutreprocessedtimestamp.txt"
+            dataUrls={["/data/launch 1/cutreprocessedforce.txt"]}
+            dataUrlLabels={{"/data/launch 1/cutreprocessedforce.txt" : "Force"}}
+            xAxisUrl="/data/launch 1/cutreprocessedtimestamp.txt"
+        />
+    ), []);
+
+    const chart2 = useMemo(() => (
+        <DataChart
+            dataUrls={["/data/launch 2/forces.txt"]}
+            dataUrlLabels={{"/data/launch 2/forces.txt" : "Force"}}
+            xAxisUrl="/data/launch 2/timestamps.txt"
         />
     ), []);
     
@@ -71,12 +79,19 @@ export function Content(): React.ReactNode {
                     {ScrollDown(offset, 75, isMobile)}
                 </div>
 
-                <div className="h-screen w-screen">
-                    Data from the first launch
-                    {chart}
-                </div>
-                <div className="min-h-screen">
-                    The Propellant
+                <div className="w-screen flex justify-evenly  *:bg-neutral-600/40 *:m-5 *:backdrop-blur-md *:p-5 *:rounded-xl *:border-neon *:border-[1.5px] *:text-center *:flex *:items-center *:flex-col *:*:my-3">
+                    <div>
+                        <div>
+                        Launch 1
+                        </div>
+                        <img src="./images/launch1.PNG" alt="Launch 1 cover image" className="aspect-square rounded w-[35vw] object-cover"/>
+                    </div>
+                    <div>
+                        <div>
+                        Launch 2
+                        </div>
+                        <img src="./images/launch2.jpg" alt="Launch 2 cover image" className=" rounded w-[35vw] aspect-square object-cover"/>
+                    </div>
                 </div>
 
               
