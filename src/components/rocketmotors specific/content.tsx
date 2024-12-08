@@ -9,7 +9,7 @@ import DataChart from "../charts";
 export function Content(): React.ReactNode {
     const [offset, setOffset] = useState(0)
 
-    
+
 
     // window dimension
     const [windowDimensions, setWindowDimensions] = useState({
@@ -38,7 +38,7 @@ export function Content(): React.ReactNode {
         };
     }, []);
 
-    
+
     const handleScroll = (event: React.UIEvent<HTMLDivElement, UIEvent>) => {
         const { scrollTop, scrollHeight, clientHeight } = event.currentTarget;
 
@@ -46,14 +46,14 @@ export function Content(): React.ReactNode {
 
         const percentage = scrollTop / maxScrollTop;
 
-        setScroll(percentage * 100); 
+        setScroll(percentage * 100);
         setOffset(event.currentTarget.scrollTop)
     }
 
     const chart1 = useMemo(() => (
         <DataChart
             dataUrls={["/data/launch 1/cutreprocessedforce.txt"]}
-            dataUrlLabels={{"/data/launch 1/cutreprocessedforce.txt" : "Force"}}
+            dataUrlLabels={{ "/data/launch 1/cutreprocessedforce.txt": "Force" }}
             xAxisUrl="/data/launch 1/cutreprocessedtimestamp.txt"
         />
     ), []);
@@ -61,11 +61,11 @@ export function Content(): React.ReactNode {
     const chart2 = useMemo(() => (
         <DataChart
             dataUrls={["/data/launch 2/forces.txt"]}
-            dataUrlLabels={{"/data/launch 2/forces.txt" : "Force"}}
+            dataUrlLabels={{ "/data/launch 2/forces.txt": "Force" }}
             xAxisUrl="/data/launch 2/timestamps.txt"
         />
     ), []);
-    
+
 
 
     return (
@@ -74,27 +74,33 @@ export function Content(): React.ReactNode {
 
                 <div className="flex flex-col items-center justify-center h-screen select-none -translate-y-5">
                     <div className="font-thin text-[10vw] centered">Rocket Motors</div>
-                    
+
 
                     {ScrollDown(offset, 75, isMobile)}
                 </div>
 
-                <div className="w-screen flex justify-evenly  *:bg-neutral-600/40 *:m-5 *:backdrop-blur-md *:p-5 *:rounded-xl *:border-neon *:border-[1.5px] *:text-center *:flex *:items-center *:flex-col *:*:my-3">
-                    <div>
-                        <div>
-                        Launch 1
-                        </div>
-                        <img src="./images/launch1.PNG" alt="Launch 1 cover image" className="aspect-square rounded w-[35vw] object-cover"/>
+                <div className="max-h-screen">
+                    <div className="text-center text-6xl">
+                        Launches
                     </div>
-                    <div>
+
+                    <div className="w-screen flex justify-evenly  *:bg-neutral-600/40 *:m-5 *:backdrop-blur-md *:p-5 *:rounded-xl *:border-neon *:border-[1.5px] *:text-center *:flex *:items-center *:max-h-[80vh] *:flex-col *:*:my-3">
                         <div>
-                        Launch 2
+                            <div>
+                                Launch 1
+                            </div>
+                            <img src="./images/launch1.PNG" alt="Launch 1 cover image" className=" rounded w-[25vw] object-cover aspect-square" />
                         </div>
-                        <img src="./images/launch2.jpg" alt="Launch 2 cover image" className=" rounded w-[35vw] aspect-square object-cover"/>
+                        <div>
+                            <div>
+                                Launch 2
+                            </div>
+                            <img src="./images/launch2.jpg" alt="Launch 2 cover image" className=" rounded w-[25vw] object-cover aspect-square" />
+                        </div>
                     </div>
                 </div>
 
-              
+
 
 
             </div>
