@@ -79,16 +79,22 @@ export function Content(): React.ReactNode {
                     {ScrollDown(offset, 75, isMobile)}
                 </div>
 
-                <div className="w-screen flex justify-evenly  *:bg-neutral-600/40 *:m-5 *:backdrop-blur-md *:p-5 *:rounded-xl *:border-neon *:border-[1.5px] *:text-center *:flex *:items-center *:flex-col *:*:my-3">
+                <div className="w-screen flex justify-evenly  *:bg-neutral-600/40 *:m-5 *:backdrop-blur-md *:p-5 *:rounded-xl *:border-neon *:border-[1.5px] *:text-center *:flex *:items-center *:flex-col *:*:my-3 flex-col lg:flex-row lg:flex-wrap lg:*:m-5 *:aspect-[8/10]">
                     <div>
                         <div>
-                        Launch 1
+                        Launch Day 1
                         </div>
                         <img src="./images/launch1.PNG" alt="Launch 1 cover image" className="aspect-square rounded w-[35vw] object-cover"/>
                     </div>
                     <div>
                         <div>
-                        Launch 2
+                        Launch Day 2
+                        </div>
+                        <img src="./images/launch2.jpg" alt="Launch 2 cover image" className=" rounded w-[35vw] aspect-square object-cover"/>
+                    </div>
+                    <div>
+                        <div>
+                        Launch Day 3
                         </div>
                         <img src="./images/launch2.jpg" alt="Launch 2 cover image" className=" rounded w-[35vw] aspect-square object-cover"/>
                     </div>
