@@ -48,32 +48,42 @@ function Content(): React.ReactNode {
                     {ScrollDown(offset, 75, isMobile)}
                 </div>
 
-                
+
 
                 <div className="centered h-screen *:m-3 font-light *:p-4">
-                    <div className={isMobile ? 'text-4xl' : 'text-7xl'}>What is AGAC?</div>
-                    <div className={isMobile ? 'text-2xl w-screen' : 'text-4xl w-[70vw]'}>AGAC is just a project where we try to build a rocket motor and see what happens. We eventually want to build a fully functioning rocket that can go up at least a few hundred meters but that will take time. We are planning to work on AGAC during the summer (but there is a chance we will just be too busy or lazy xd)</div>
+                    <div className="text-4xl sm:text-7xl text-center" >What is AGAC?</div>
+                    <div className="text-2xl w-screen sm:text-4xl sm:w-[70vw]">AGAC is just a project where we try to build a rocket motor and see what happens. We eventually want to build a fully functioning rocket that can go up at least a few hundred meters but that will take time. We are planning to work on AGAC during the summer (but there is a chance we will just be too busy or lazy xd)</div>
                 </div>
 
-                
+
 
                 <div className="centered h-screen *:m-3 font-light *:p-4">
-                    <div className={isMobile ? 'text-4xl' : 'text-7xl'}>Where are we right now?</div>
-                    <div className={isMobile ? 'text-2xl w-screen' : 'text-4xl w-[70vw]'}>{ShortOrLong()}</div>
+                    <div className="text-4xl sm:text-7xl text-center">Where are we right now?</div>
+                    <div className="text-2xl w-screen sm:text-4xl sm:w-[70vw]">We have launched 5 rockets so far, and only 1 exploded, which is a pretty good ratio! We managed to get useable data from 2 of those launches</div>
                 </div>
 
-                
+
 
                 <div className="centered h-screen *:m-3 font-light *:p-4">
-                    <div className={isMobile ? 'text-4xl' : 'text-7xl'}>Who are we?</div>
-                    <div className={isMobile ? 'text-2xl w-screen' : 'text-4xl w-[70vw]'}>None of your business</div>
+                    <div className="text-4xl sm:text-7xl text-center">Who are we?</div>
+                    <div className="text-2xl w-screen sm:text-4xl sm:w-[70vw]">2 Hungarian Highschool students with brain damage</div>
                 </div>
-                
-                
+
+
 
                 <div className="centered h-screen *:m-3 font-light *:p-4">
-                    <div className={isMobile ? 'text-4xl' : 'text-7xl'}>What does "AGAC" mean?</div>
-                    <div className={isMobile ? 'text-2xl w-screen' : 'text-4xl w-[70vw]'}>The name AGAC was chosen by GPT-2 and it stands for Advanced A.G.A (dont ask what A.G.A is we have no clue) but the name stuck so now its agac.</div>
+                    <div className="text-4xl sm:text-7xl text-center">What does "AGAC" mean?</div>
+                    <div className="text-2xl w-screen sm:text-4xl sm:w-[70vw]">The name AGAC was chosen by GPT-2 and it stands for Advanced A.G.A (dont ask what A.G.A is, we have no clue) but the name stuck so now its agac.</div>
+                </div>
+
+                <div className="centered h-screen *:m-3 font-light *:p-4">
+                    <div className="text-4xl sm:text-7xl text-center">Check out the tools we made</div>
+                    <div className="flex *:p-2 *:bg-purple-800/50 *:rounded-lg *:backdrop-blur-md *:transition-all *:m-1.5 flex-wrap justify-center">
+                        <a href="#dataProcessor" className="hover:scale-110  hover:mx-6">HX711 loadcell data processor</a>
+                        <a href="#propellantCalculator" className="hover:scale-110 hover:mx-6">Fuel and Oxidizer calculator</a>
+
+
+                    </div>
                 </div>
 
 
@@ -109,27 +119,7 @@ function ScrollDown(scroll: number, disappear: number, isMobile: boolean) {
 }
 
 
-function ShortOrLong(): React.ReactNode {
-    const [answer, setter] = useState("") // "short" or "long"
 
-
-    if (answer == "") {
-        return (<div className="centered underline hover:cursor-pointer *:m-6">
-            <div onClick={() => { setter("short") }} >Short answer</div>
-            <div onClick={() => { setter("long") }} >Long answer</div>
-        </div>)
-    }
-    if (answer == "short") {
-        return (<div className="centered">No where, we are no where</div>)
-    }
-    if (answer == "long") {
-        return (<div className="centered">
-            We got all of the 3D plans for the rocket test stand where we will test our rocket motors. The propellent we will be using with it will be simple black powder. We already have the loadcell for the rocket test stand working we just have to save the data we gather somehow, the current plan is to write to an SD card but we want to change to saving all the data to our own server.
-        </div>)
-    }
-
-    return <>ERROR</>
-}
 
 
 

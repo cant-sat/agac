@@ -4,6 +4,7 @@ import './index.css'
 import { createHashRouter, RouterProvider } from 'react-router-dom'
 import { Suspense } from 'react'
 import Loading from './components/loading.tsx'
+import PropellantCalculator from './pages/PropellantCalculator.tsx'
 
 // Lazy load components
 const Index = lazy(() => import('./pages/Index.tsx'))
@@ -19,11 +20,14 @@ const router = createHashRouter([{
   path: "/dataProcessor",
   element: (<DataProcessor/>)
 },{
-  path: "/rocketmotors",
+  path: "/rocketMotors",
   element: (<RocketMotors/>)
 },{
   path: "/rockets",
   element: (<Rockets/>)
+},{
+  path: "/propellantCalculator",
+  element: (<PropellantCalculator/>)
 }])
 
 

@@ -50,7 +50,18 @@ function DataProcessor(): JSX.Element {
     return (
       <div className="text-white *:m-3">
         <div>
-        Data Processor for HX711 loadcell
+        Data Processor for HX711 loadcell - For a given file containing a list of numbers in JSON formatting, it will output another list of numbers where, a<sub>n</sub>= ((o<sub>n</sub> * o<sub>d</sub> - o<sub>o</sub>) / n<sub>d</sub>) + n<sub>o</sub>
+        <div>
+          o<sub>n</sub> : nth elemnt of the input
+          <br />
+          o<sub>d</sub> : Original divider
+          <br />
+          o<sub>o</sub> : Original offset
+          <br />
+          n<sub>d</sub> : New dividel
+          <br />
+          n<sub>o</sub> : New offset
+        </div>
         </div>
         
         <input type="file" accept=".txt" name="Original Values" id="preProcessed" />
