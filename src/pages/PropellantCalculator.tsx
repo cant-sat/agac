@@ -1,8 +1,8 @@
-import { useState } from "react"
+//import { useState } from "react"
 
 function PropellantCalculator(): JSX.Element {
-    const [reactants, setReactants] = useState([])
-    const [products, setProducts] = useState([])
+    //const [reactants, setReactants] = useState([])
+    //const [products, setProducts] = useState([])
 
     return (
       <div className="text-white">

@@ -1,7 +1,7 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, /*useMemo,*/ useState } from "react";
 import { setScroll } from "./experience";
 import { MdKeyboardDoubleArrowDown } from "react-icons/md";
-import DataChart from "../charts";
+//import DataChart from "../charts";
 
 
 
@@ -50,21 +50,21 @@ export function Content(): React.ReactNode {
         setOffset(event.currentTarget.scrollTop)
     }
 
-    const chart1 = useMemo(() => (
+    /*const chart1 = useMemo(() => (
         <DataChart
             dataUrls={["/data/launch 1/cutreprocessedforce.txt"]}
             dataUrlLabels={{ "/data/launch 1/cutreprocessedforce.txt": "Force" }}
             xAxisUrl="/data/launch 1/cutreprocessedtimestamp.txt"
         />
-    ), []);
+    ), []);*/
 
-    const chart2 = useMemo(() => (
+    /*const chart2 = useMemo(() => (
         <DataChart
             dataUrls={["/data/launch 2/forces.txt"]}
             dataUrlLabels={{ "/data/launch 2/forces.txt": "Force" }}
             xAxisUrl="/data/launch 2/timestamps.txt"
         />
-    ), []);
+    ), []);*/
 
 
 

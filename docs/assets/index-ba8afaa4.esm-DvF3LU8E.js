@@ -1,4 +1,4 @@
-import{r as nn,g as $y,j as A0}from"./index-D7pVF8RR.js";/**
+import{r as nn,g as $y,j as A0}from"./index-36J_F1yB.js";/**
  * @license
  * Copyright 2010-2024 Three.js Authors
  * SPDX-License-Identifier: MIT
