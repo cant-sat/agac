@@ -48,7 +48,7 @@ function DataProcessor(): JSX.Element {
     }
 
     return (
-      <div className="text-white *:m-3">
+      <div className="text-white *:m-3 p-2">
         <div>
         Data Processor for HX711 loadcell - For a given file containing a list of numbers in JSON formatting, it will output another list of numbers where, a<sub>n</sub>= ((o<sub>n</sub> * o<sub>d</sub> - o<sub>o</sub>) / n<sub>d</sub>) + n<sub>o</sub>
         <div>
