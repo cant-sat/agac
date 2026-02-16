@@ -64,7 +64,7 @@ function DataProcessor(): JSX.Element {
         </div>
         </div>
         
-        <input type="file" accept=".txt" name="Original Values" id="preProcessed" />
+        <input type="file" accept=".txt, .json" name="Original Values" id="preProcessed" />
         
         <hr />
         <input type="number" className="text-black" name="" id="originalOffset"/> Original Offset
