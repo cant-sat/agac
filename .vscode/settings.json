@@ -12,12 +12,22 @@
     "**/package.json": true,
     "**/*.js.map": true,
     "**/vite-env.d.ts": true,
-    "README.md": false,
+    "README.md": true,
     "postcss.config.js": true,
     "tsconfig.json": true,
     "tsconfig.node.json": true,
-    "docs": false,
-    ".vscode": true
+    "docs": true,
+    ".vscode": true,
+    "LICENSE": true,
+    "yarn.lock": true,
+    "src/components/loading.tsx": true,
+    "src/components/charts.tsx": true,
+    "src/components/rocketmotors specific": true,
+    "src/components/index specific": true,
+    "src/pages/DataProcessor.tsx": true,
+    "src/pages/Index.tsx": true,
+    "src/pages/RocketMotors.tsx": true,
+    "src/pages/Rockets.tsx": true
   },
   "explorerExclude.backup": {}
 }
