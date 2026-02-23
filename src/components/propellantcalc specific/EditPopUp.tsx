@@ -1,17 +1,19 @@
 import { useEffect, useState } from "react"
 import { molecule } from "../../utility/chemistry"
+import { globalEditMolecule, globalRemoveMolecule, globalSetEditMoleculeData } from "../../pages/PropellantCalculator"
 
 interface editPopUpInterface {
-    closeFunc: Function,
 
-    currentMoleculeData: { molecule: molecule, index: number, molecules:molecule[], setMolecules:Function } | null,
+    currentMoleculeData: { molecule: molecule, index: number } | null,
 }
 
 
 
-function EditPopUp({ currentMoleculeData, closeFunc}: editPopUpInterface): JSX.Element {
+function EditPopUp({ currentMoleculeData }: editPopUpInterface): JSX.Element {
 
     const [deleteSure, setDeletSure] = useState(false)
+
+    const [message, setMessage] = useState("")
 
     function handleDeleteButton() {
         if (!deleteSure) {
@@ -20,37 +22,74 @@ function EditPopUp({ currentMoleculeData, closeFunc}: editPopUpInterface): JSX.E
         }
         else {
             setDeletSure(false)
-            
-            let t = currentMoleculeData!.molecules
-            t.splice(currentMoleculeData!.index, 1)
 
-            closeFunc()
+            globalRemoveMolecule(currentMoleculeData!.molecule.moleculeType, currentMoleculeData!.index)
+
+            globalSetEditMoleculeData(null)
+
+
         }
     }
 
     useEffect(() => {
         if (currentMoleculeData) {
             (document.getElementById("newName") as HTMLInputElement).value = currentMoleculeData.molecule.name;
-            (document.getElementById("newNotation") as HTMLInputElement).value = currentMoleculeData.molecule.chemicalNotation;
             (document.getElementById("newHeatOfFormation") as HTMLInputElement).value = currentMoleculeData.molecule.heatOfFormation.toString();
+            (document.getElementById(`newDensity`) as HTMLInputElement).value = currentMoleculeData.molecule.density.toString()
         }
     }, [currentMoleculeData])
 
-    return (<dialog open={currentMoleculeData != null} className="w-screen h-screen bg-black text-white z-10">
-        Name : <input type="text" name="newName" id="newName" className="text-black"/>
-        <br />
-        Notation : <input type="text" name="newNotation" id="newNotation" className="text-black"/>
-        <br />
-        Heat of formation : <input type="number" name="newHeatOfFormation" id="newHeatOfFormation" className="text-black"/>
+    function handleSave(e: React.FormEvent<HTMLFormElement>) {
+        e.preventDefault()
+
+        if (currentMoleculeData) {
+            const MoleculeName = (document.getElementById(`newName`) as HTMLInputElement).value
+            const MoleculeHeatOfFormation = Number(
+                (document.getElementById(`newHeatOfFormation`) as HTMLInputElement).value
+            )
+            const MoleculeDensity = Number(
+                (document.getElementById(`newDensity`) as HTMLInputElement).value
+            )
+
+            let t = { ...currentMoleculeData.molecule }
+            t.density = MoleculeDensity
+            t.name = MoleculeName
+            t.heatOfFormation = MoleculeHeatOfFormation
+
+            if (typeof t == "string") {
+                setMessage(t)
+            } else {
+                setMessage("")
+                    ; (document.getElementById(`newDensity`) as HTMLInputElement).value = ""
+                    ; (document.getElementById(`newName`) as HTMLInputElement).value = ""
+                    ; (document.getElementById(`newHeatOfFormation`) as HTMLInputElement).value = ""
+
+
+                globalEditMolecule(t, currentMoleculeData.index)
+                globalSetEditMoleculeData(null)
+            }
+        }
+    }
+
+    return (<dialog open={currentMoleculeData != null} className="w-screen h-screen bg-black text-white z-10 *:m-1">
+        <form className="*:m-1" onSubmit={handleSave}>
+            Name : <input type="text" name="newName" id="newName" />
+            <br />
+            Notation : {currentMoleculeData ? currentMoleculeData.molecule.chemicalNotationElement : ""}
+            <br />
+            Heat of formation : <input type="number" step={0.001} name="newHeatOfFormation" id="newHeatOfFormation" /> kJ/mol
+            <br />
+            Densitiy : <input type="number" step={0.001} name="newDensity" id="newDensity" /> g/cm<sup>3</sup>
+            <br />
+            <button type="submit" >Save data</button>
+            <div>{message}</div>
+        </form>
+
+        <button onClick={() => { globalSetEditMoleculeData(null) }} >Discard changes</button>
+
         <br />
 
-        <button>Save data</button>
-        <br />
-        <button onClick={() => { closeFunc() }}>Discard changes</button>
-
-        <br />
-
-        <button className="text-red-500" onClick={handleDeleteButton}>{deleteSure ? "Are you sure?" : "DELETE"}</button>
+        <button className="text-red-500 font-bold" onClick={handleDeleteButton}>{deleteSure ? "Are you sure?" : "DELETE"}</button> <span>(everything that contained this molecule will also be deleted)</span>
     </dialog>)
 }
 

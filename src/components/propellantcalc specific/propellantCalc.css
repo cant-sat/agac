@@ -1,0 +1,41 @@
+button {
+  margin-left: 0.5rem;   /* mx-2 */
+  margin-right: 0.5rem;  /* mx-2 */
+  
+  background-color: var(--color-gray-600); /* bg-gray-600 */
+  
+  padding-top: 0.125rem;   /* py-0.5 */
+  padding-bottom: 0.125rem;/* py-0.5 */
+  padding-left: 0.5rem;    /* px-2 */
+  padding-right: 0.5rem;   /* px-2 */
+  
+  border-radius: 0.125rem; /* rounded-sm */
+  border: none;
+}
+
+button:hover {
+  cursor: pointer; /* hover:cursor-pointer */
+}
+
+button:disabled{
+  background-color: var(--color-gray-700);
+  color: var(--color-gray-300);
+}
+
+input{
+    color: black;
+    padding: 0.125rem;
+    background-color: var(--color-gray-300);
+    border-radius: 0.125rem;
+}
+
+select{
+        color: black;
+    padding: 0.125rem;
+    background-color: var(--color-gray-300);
+    border-radius: 0.125rem;
+}
+
+select:disabled{
+    background-color: var(--color-gray-500);
+}

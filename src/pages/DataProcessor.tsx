@@ -64,20 +64,20 @@ function DataProcessor(): JSX.Element {
         </div>
         </div>
         
-        <input type="file" accept=".txt, .json" name="Original Values" id="preProcessed" />
+        <input className="bg-gray-600 py-0.5 px-2 rounded-sm hover:cursor-pointer" type="file" accept=".txt, .json" name="Original Values" id="preProcessed" />
         
         <hr />
-        <input type="number" className="text-black" name="" id="originalOffset"/> Original Offset
+        <input type="number" className="text-black bg-gray-300" name="" id="originalOffset"/> Original Offset
         <br />
-        <input type="number" className="text-black" name="" id="originalDivider"/> Original Divider
+        <input type="number" className="text-black bg-gray-300" name="" id="originalDivider"/> Original Divider
 
         <hr />
-        <input type="number" className="text-black" name="" id="newOffset" /> New Offset
+        <input type="number" className="text-black bg-gray-300" name="" id="newOffset" /> New Offset
         <br />
-        <input type="number" className="text-black" name="" id="newDivider"/> New Divider
+        <input type="number" className="text-black bg-gray-300" name="" id="newDivider"/> New Divider
         <hr />
 
-        <input type="button" value="Process Data" className="bg-white text-black p-1 hover:cursor-pointer active:bg-slate-300" onClick={processData}/>
+        <input type="button" value="Process Data" className=" hover:cursor-pointer active:bg-gray-700  bg-gray-600 py-0.5 px-2 rounded-sm" onClick={processData}/>
 
         <hr />
 

@@ -32,3 +32,16 @@ export function getRandomVector3(minRadius : number, maxRadius : number, onlyUp 
 
     return new Vector3(origin.x + x, origin.y +y,origin.z +z)
 }
+// Source - https://stackoverflow.com/a/1349426
+// Posted by csharptest.net, modified by community. See post 'Timeline' for change history
+// Retrieved 2026-02-23, License - CC BY-SA 4.0
+
+function generateKey(length:number) {
+    var result           = '';
+    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for ( var i = 0; i < length; i++ ) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+}

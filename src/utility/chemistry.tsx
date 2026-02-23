@@ -1,26 +1,52 @@
 import React from "react";
 
+
+export class rocketFuel{
+    public name:string = ""
+    public fuels : {ratio :number, fuelPointer:number}[] = []
+    public oxidisers : {ratio :number, oxidiserPointer:number}[] = []
+    public oxidiserExcess : number = 0
+    public description : string = ""
+}
+
+export class reaction{
+    fuelPointer : number = -1
+    fuelAmount : number = 0
+    
+    oxidiserPointer:number =-1
+    oxidiserAmount: number = 0
+
+    endProducts:{endProductPointer:number, endProductAmount : number}[] = []
+}
+
+
 export class molecule {
     public name: string = "";
     public chemicalNotation: string = "";
 
-    public heatOfFormation : number = 0;
+    public heatOfFormation: number = 0;
+    public density : number = -1;
 
     public chemicalNotationElement: React.ReactElement = (<></>)
 
-    public elements: Uint16Array = new Uint16Array(118).fill(0);
+    public elementsById: Uint16Array = new Uint16Array(118).fill(0);
+    public elementsIdList: number[] = []
 
-    public moleculeType : moleculeType = -1
+
+    public moleculeType: moleculeType = -1
+
+    public molarMass = 0
 
     public static moleculeFromNotation(
         moleculeName: string,
         moleculeChemicalNotation: string,
-        moleculeHeatOfFormation : number,
-        tMoleculeType : moleculeType,
+        moleculeHeatOfFormation: number,
+        tMoleculeType: moleculeType,
+        moleculeDensity : number
     ): molecule | string {
 
-        
-        if(moleculeChemicalNotation == "" || moleculeName == ""){
+
+        if (moleculeChemicalNotation == "" || moleculeName == "") {
             return "A name and chemical notation is needed"
         }
         if (!chemInited) {
@@ -33,8 +59,11 @@ export class molecule {
         retmolecule.name = moleculeName;
         retmolecule.chemicalNotation = moleculeChemicalNotation;
         retmolecule.moleculeType = tMoleculeType;
+        retmolecule.density = moleculeDensity
 
         const notationParts: React.ReactNode[] = [];
+
+        
 
         for (let i = 0; i < moleculeChemicalNotation.length; i += 0) {
 
@@ -61,7 +90,7 @@ export class molecule {
                     i < moleculeChemicalNotation.length - 1 &&
                     moleculeChemicalNotation[i + 1].toLocaleLowerCase() == moleculeChemicalNotation[i + 1] &&
                     moleculeChemicalNotation[i + 1].match(/[a-z]/i)
-                    
+
                 ) {
 
                     currentElementNotation += moleculeChemicalNotation[i + 1];
@@ -108,8 +137,8 @@ export class molecule {
                     }
 
                 }
-                
-                
+
+
             }
 
 
@@ -117,8 +146,9 @@ export class molecule {
             i += iOffset;
 
 
-            
-            retmolecule.elements[currentElement] += currentElementAmount;
+            retmolecule.elementsIdList.push(currentElement)
+            retmolecule.elementsById[currentElement] += currentElementAmount;
+            retmolecule.molarMass += elementsById[currentElement].mass * currentElementAmount
 
         }
         retmolecule.chemicalNotationElement = <>{notationParts}</>;
@@ -134,7 +164,7 @@ export type ElementType = {
     mass: number
 }
 
-export enum moleculeType{
+export enum moleculeType {
     unassigned = -1,
     oxidiser,
     fuel,
@@ -155,15 +185,21 @@ export function initChem() {
         .then((val) => {
             elements = val
 
-            let tElementsById: ElementType[] = new Array<ElementType>(118)
+            let telementsById: ElementType[] = new Array<ElementType>(118)
 
             for (let key in val) {
-                tElementsById[val[key].number - 1] = val[key]
+                telementsById[val[key].number - 1] = val[key]
             }
 
-            elementsById = tElementsById
+            elementsById = telementsById
 
-            chemInited = true
+           
+                chemInited = true
+
+           
+            
+
+
 
         })
 
