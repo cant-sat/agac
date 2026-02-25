@@ -1,20 +1,20 @@
 import { useEffect, useState } from "react"
-import { molecule } from "../../utility/chemistry"
-import { globalAddReaction, globalEditMolecule, globalRemoveMolecule, globalSetEditMoleculeData, globalSetReactionBalanceOpen } from "../../pages/PropellantCalculator"
+import { molecule, rocketFuel } from "../../utility/chemistry"
+import {  globalEditMolecule, globalRemoveMolecule, globalSetEditMoleculeData, globalSetReactionBalanceOpen } from "../../pages/PropellantCalculator"
 
 interface reactionPopUpInterface {
 
-    open: boolean,
-    reactionsNeeded: { fuelPointer: number, oxidiserPointer: number }[],
+    rocketFuelPointer : number | null,
     fuels: molecule[],
     oxidisers: molecule[],
     endProducts: molecule[],
+    rocketFuels: rocketFuel[]
 
 }
 
 
 
-function ReactionPopUp({ open, fuels, oxidisers, endProducts, reactionsNeeded }: reactionPopUpInterface): JSX.Element {
+function ReactionPopUp({ fuels, oxidisers, endProducts, rocketFuels, rocketFuelPointer }: reactionPopUpInterface): JSX.Element {
 
 
     const [fuelAmount, setFuelAmount] = useState(1)

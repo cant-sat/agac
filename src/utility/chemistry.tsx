@@ -7,17 +7,15 @@ export class rocketFuel{
     public oxidisers : {ratio :number, oxidiserPointer:number}[] = []
     public oxidiserExcess : number = 0
     public description : string = ""
+
+    public reactionId: string = ""
+
+    public balanced:boolean = false
+    public fuelAmount? : number
+    public oxidiserAmount? : number
+    public endProducts? : {amount:number, endProductPointer : number}[]
 }
 
-export class reaction{
-    fuelPointer : number = -1
-    fuelAmount : number = 0
-    
-    oxidiserPointer:number =-1
-    oxidiserAmount: number = 0
-
-    endProducts:{endProductPointer:number, endProductAmount : number}[] = []
-}
 
 
 export class molecule {

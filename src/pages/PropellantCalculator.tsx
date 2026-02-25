@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { chemInited, initChem, molecule, moleculeType, reaction, rocketFuel } from "../utility/chemistry"
+import { chemInited, initChem, molecule, moleculeType,  rocketFuel } from "../utility/chemistry"
 import EditPopUp from "../components/propellantcalc specific/EditPopUp"
 import Section from "../components/propellantcalc specific/Section"
 import RocketFuelSection from "../components/propellantcalc specific/RocketFuelSection"
@@ -14,7 +14,6 @@ export let globalRemoveMolecule: (deleteType: moleculeType, index: number) => vo
 export let globalAddRocketFuel: (newRocketFuel: rocketFuel) => void = () => { throw "globalAddRocketFuel is not yet set" }
 export let globalRemoveRocketFuel: (index: number) => void = () => { throw "globalRemoveRocketFuel is not yet set" }
 export let globalSetReactionBalanceOpen: (open: boolean) => void = () => { throw "globalSetReactionBalanceOpen is not yet set" }
-export let globalAddReaction: (reaction: reaction) => void = () => { throw "globalAddReaction is not yet set" }
 
 function PropellantCalculator(): JSX.Element {
 
@@ -22,7 +21,6 @@ function PropellantCalculator(): JSX.Element {
   const [fuels, setFuels] = useState<molecule[]>([])
   const [endProducts, setEndProducts] = useState<molecule[]>([])
   const [rocketFuels, setRocketFuels] = useState<rocketFuel[]>([])
-  const [reactions, setReactions] = useState<{ [compositeKey: string]: reaction }>({})
 
 
 
@@ -30,7 +28,6 @@ function PropellantCalculator(): JSX.Element {
 
   const [reactionBalanceOpen, setReactionBalanceOpen] = useState(false)
 
-  const [reactionsNeeded, setReactionsNeeded] = useState<{ fuelPointer: number, oxidiserPointer: number }[]>([])
 
   globalSetEditMoleculeData = (newMolecule) => {
     setEditMoleculeData(newMolecule)
@@ -40,28 +37,6 @@ function PropellantCalculator(): JSX.Element {
     setReactionBalanceOpen(open)
   }
 
-  globalAddReaction = (reaction: reaction) => {
-
-
-    setReactionsNeeded(prev => {
-      if (prev[0].fuelPointer != reaction.fuelPointer || prev[0].oxidiserPointer != reaction.oxidiserPointer) {
-        throw "YOU ALWAYS NEED TO BALANCE THE FIRST EQUATION IN THE REACTIONS NEEDED ARRAY"
-      }
-
-      setReactions(prevR => {
-        const j = { ...prevR }
-
-        j[`${fuels[reaction.fuelPointer].chemicalNotation}-${oxidisers[reaction.oxidiserPointer].chemicalNotation}`] = reaction
-
-        return j
-      })
-
-      const t = [...prev]
-      t.shift()
-
-      return t
-    })
-  }
 
   useEffect(() => {
     if (!chemInited) initChem()
@@ -74,38 +49,7 @@ function PropellantCalculator(): JSX.Element {
     })
   }, [])
 
-  useEffect(() => {
-    let tReactionsNeeded: { [compositeKey: string]: { fuelPointer: number, oxidiserPointer: number } } = {}
-
-    for (let i = 0; i < rocketFuels.length; i++) {
-      for (let j = 0; j < rocketFuels[i].fuels.length; j++) {
-        for (let k = 0; k < rocketFuels[i].oxidisers.length; k++) {
-          if (reactions[`${fuels[rocketFuels[i].fuels[j].fuelPointer].chemicalNotation}-${oxidisers[rocketFuels[i].oxidisers[k].oxidiserPointer].chemicalNotation}`]) {
-            continue
-          }
-
-          tReactionsNeeded[`${fuels[rocketFuels[i].fuels[j].fuelPointer].chemicalNotation}-${oxidisers[rocketFuels[i].oxidisers[k].oxidiserPointer].chemicalNotation}`] = { fuelPointer: rocketFuels[i].fuels[j].fuelPointer, oxidiserPointer: rocketFuels[i].oxidisers[k].oxidiserPointer };
-
-
-        }
-
-      }
-
-    }
-
-    let tReactionsNeededArray: { fuelPointer: number, oxidiserPointer: number }[] = []
-
-    for (const key in tReactionsNeeded) {
-
-      tReactionsNeededArray.push(tReactionsNeeded[key])
-
-
-
-    }
-
-    setReactionsNeeded(tReactionsNeededArray)
-  }, [rocketFuels])
-
+  
   function addMolecule(newMolecule: molecule) {
     switch (newMolecule.moleculeType) {
 
@@ -228,7 +172,6 @@ function PropellantCalculator(): JSX.Element {
         currentMoleculeData={editMoleculeData}
       />
 
-      <ReactionPopUp open={reactionBalanceOpen} endProducts={endProducts} fuels={fuels} oxidisers={oxidisers} reactionsNeeded={reactionsNeeded} />
 
       <div className="text-white p-2">
 
@@ -258,8 +201,6 @@ function PropellantCalculator(): JSX.Element {
         <RocketFuelSection fuels={fuels} oxidisers={oxidisers} rocketFuels={rocketFuels} />
 
         <hr />
-
-        <button className="my-2" onClick={() => { setReactionBalanceOpen(true) }} disabled={reactionsNeeded.length == 0}>Balance Reactions</button>
       </div>
     </>
   )

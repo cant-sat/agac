@@ -17,3 +17,12 @@ export function Vector3toEuler(a : Vector3) : Euler{
 export function DegToRad(a : number){
     return a /( 180 / Math.PI)
 }
+
+// credit to: https://douglasmoura.dev/en-US/finding-the-greatest-common-divisor-in-typescript
+export const gcd = (a: number, b: number): number => {
+  if (b === 0) {
+    return a
+  }
+  
+  return gcd(b, a % b)
+}

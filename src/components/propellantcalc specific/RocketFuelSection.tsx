@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { molecule, rocketFuel } from "../../utility/chemistry"
 import { globalAddRocketFuel, globalRemoveRocketFuel } from "../../pages/PropellantCalculator"
+import { gcd } from "../../utility/math"
 
 interface rocketFuelSectionInterface {
     oxidisers: molecule[]
@@ -22,7 +23,7 @@ export default function RocketFuelSection({ oxidisers, fuels, rocketFuels }: roc
 
     const [oxidiserExcess, setOxidiserExcess] = useState(0)
 
-    
+
 
     useEffect(() => {
         setSelectedFuels([])
@@ -41,7 +42,31 @@ export default function RocketFuelSection({ oxidisers, fuels, rocketFuels }: roc
             return
         }
 
-        if (rocketFuelName == "") {
+
+
+        let fuelDivisor: number = selectedFuels[0].ratio
+
+        for (let i = 1; i < selectedFuels.length; i++) {
+            fuelDivisor = gcd(fuelDivisor, selectedFuels[i].ratio)
+
+        }
+        let newFuels: { fuelPointer: number, ratio: number }[] = selectedFuels.map((val) => {
+            return { ...val, ratio: val.ratio / fuelDivisor }
+        })
+
+        let oxidiserDivisor: number = selectedOxidisers[0].ratio
+
+        for (let i = 1; i < selectedOxidisers.length; i++) {
+            oxidiserDivisor = gcd(oxidiserDivisor, selectedOxidisers[i].ratio)
+
+        }
+        let newOxidisers: { oxidiserPointer: number, ratio: number }[] = selectedOxidisers.map((val) => {
+            return { ...val, ratio: val.ratio / fuelDivisor }
+        })
+
+        let id = ""
+
+        
             const formatSide = (
                 items: { name: string, ratio: number }[]
             ): string => {
@@ -61,23 +86,24 @@ export default function RocketFuelSection({ oxidisers, fuels, rocketFuels }: roc
             }
 
             const fuelSide = formatSide(
-                selectedFuels.map(f => ({
+                newFuels.map(f => ({
                     name: fuels[f.fuelPointer].chemicalNotation,
                     ratio: f.ratio
                 }))
             )
 
             const oxidiserSide = formatSide(
-                selectedOxidisers.map(o => ({
+                newOxidisers.map(o => ({
                     name: oxidisers[o.oxidiserPointer].chemicalNotation,
                     ratio: o.ratio
                 }))
             )
 
-            rocketFuelName = `${fuelSide}; ${oxidiserSide}`
-        }
+            id = `${fuelSide}; ${oxidiserSide}`
+        
+            if(rocketFuelName == "") rocketFuelName = id
 
-        let tRocketFuel: rocketFuel = { fuels: selectedFuels, name: rocketFuelName, oxidisers: selectedOxidisers, oxidiserExcess: oxidiserExcess , description:rocketFuelDescription}
+        let tRocketFuel: rocketFuel = { fuels: newFuels, name: rocketFuelName, oxidisers: newOxidisers, oxidiserExcess: oxidiserExcess, description: rocketFuelDescription , reactionId : id, balanced: false}
 
         globalAddRocketFuel(tRocketFuel)
 
@@ -85,7 +111,12 @@ export default function RocketFuelSection({ oxidisers, fuels, rocketFuels }: roc
         setSelectedOxidisers([])
 
         setSelectedFuelsById(new Array<boolean>(fuels.length).fill(false))
-        setSelectedOxidisersById(new Array<boolean>(oxidisers.length).fill(false))
+        setSelectedOxidisersById(new Array<boolean>(oxidisers.length).fill(false));
+
+        (document.getElementById("rocketFuelName") as HTMLInputElement).value = "";
+        (document.getElementById("rocketFuelDescription") as HTMLInputElement).value = "";
+
+        setOxidiserExcess(0)
         setMessage("")
     }
 
