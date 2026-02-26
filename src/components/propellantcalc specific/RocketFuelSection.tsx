@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { molecule, rocketFuel } from "../../utility/chemistry"
-import { globalAddRocketFuel, globalRemoveRocketFuel } from "../../pages/PropellantCalculator"
+import { globalAddRocketFuel, globalRemoveRocketFuel, globalSetReactionBalanceRocketFuelPointer } from "../../pages/PropellantCalculator"
 import { gcd } from "../../utility/math"
 
 interface rocketFuelSectionInterface {
@@ -325,7 +325,13 @@ export default function RocketFuelSection({ oxidisers, fuels, rocketFuels }: roc
                 }}
             >
                 X
-            </button>{val.name}</div>
+            </button>{val.name}
+            
+            {val.balanced ? "Yippi" : (<button onClick={()=>{
+                globalSetReactionBalanceRocketFuelPointer(i)
+            }}>
+                    Balance equation
+            </button>)}</div>
 
         ))}
     </div>)

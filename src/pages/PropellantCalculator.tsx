@@ -13,7 +13,8 @@ export let globalEditMolecule: (newMolecule: molecule, index: number) => void = 
 export let globalRemoveMolecule: (deleteType: moleculeType, index: number) => void = () => { throw "globalRemoveMolecule is not yet set" }
 export let globalAddRocketFuel: (newRocketFuel: rocketFuel) => void = () => { throw "globalAddRocketFuel is not yet set" }
 export let globalRemoveRocketFuel: (index: number) => void = () => { throw "globalRemoveRocketFuel is not yet set" }
-export let globalSetReactionBalanceOpen: (open: boolean) => void = () => { throw "globalSetReactionBalanceOpen is not yet set" }
+export let globalSetReactionBalanceRocketFuelPointer: (newRocketFuelPointer : number | null) => void = () => { throw "globalSetReactionBalanceRocketFuelPointer is not yet set" }
+export let globalBalanceRocketFuel: (i : number, fuelAmount:number, oxidiserAmount :number, endProducts : {amount:number, endProductPointer : number}[]) => void= () => { throw "globalBalanceRocketFuel is not yet set" }
 
 function PropellantCalculator(): JSX.Element {
 
@@ -26,15 +27,15 @@ function PropellantCalculator(): JSX.Element {
 
   const [editMoleculeData, setEditMoleculeData] = useState<{ molecule: molecule, index: number } | null>(null)
 
-  const [reactionBalanceOpen, setReactionBalanceOpen] = useState(false)
+  const [reactionBalanceRocketFuelPointer, setReactionBalanceRocketFuelPointer] = useState<number | null>(null)
 
 
   globalSetEditMoleculeData = (newMolecule) => {
     setEditMoleculeData(newMolecule)
   }
 
-  globalSetReactionBalanceOpen = (open: boolean) => {
-    setReactionBalanceOpen(open)
+  globalSetReactionBalanceRocketFuelPointer = (newRocketFuelPointer: number | null) => {
+    setReactionBalanceRocketFuelPointer(newRocketFuelPointer)
   }
 
 
@@ -171,6 +172,9 @@ function PropellantCalculator(): JSX.Element {
       <EditPopUp
         currentMoleculeData={editMoleculeData}
       />
+
+      <ReactionPopUp endProducts={endProducts} fuels={fuels} oxidisers={oxidisers} rocketFuelPointer={reactionBalanceRocketFuelPointer} rocketFuels={rocketFuels}/>
+
 
 
       <div className="text-white p-2">
