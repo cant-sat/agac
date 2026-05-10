@@ -25,7 +25,7 @@ export class molecule {
     public heatOfFormation: number = 0;
     public density : number = -1;
 
-    public chemicalNotationElement: React.ReactElement = (<></>)
+    public chemicalNotationElement: React.ReactElement = (<></>);
 
     public elementsById: Uint16Array = new Uint16Array(118).fill(0);
     public elementsIdList: number[] = []
@@ -149,7 +149,7 @@ export class molecule {
             retmolecule.molarMass += elementsById[currentElement].mass * currentElementAmount
 
         }
-        retmolecule.chemicalNotationElement = <>{notationParts}</>;
+        retmolecule.chemicalNotationElement = (<>{notationParts}</>);
 
         return retmolecule;
     }

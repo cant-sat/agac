@@ -85,7 +85,7 @@ function ReactionPopUp({ fuels, oxidisers, endProducts, rocketFuels, rocketFuelP
 
                 return !molecule.elementsIdList.some(
                     (val) =>
-                        sumFuel[val] === 0 &&
+                        sumFuel[val] === 0 ||
                         sumOxidiser[val] === 0
                 )
             })

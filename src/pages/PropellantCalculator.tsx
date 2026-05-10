@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { chemInited, initChem, molecule, moleculeType,  rocketFuel } from "../utility/chemistry"
+import { chemInited, initChem, molecule, moleculeType,  rocketFuel } from "../utility/chemistry.tsx"
 import EditPopUp from "../components/propellantcalc specific/EditPopUp"
 import Section from "../components/propellantcalc specific/Section"
 import RocketFuelSection from "../components/propellantcalc specific/RocketFuelSection"
@@ -21,6 +21,7 @@ function PropellantCalculator(): JSX.Element {
   const [oxidisers, setOxidisers] = useState<molecule[]>([])
   const [fuels, setFuels] = useState<molecule[]>([])
   const [endProducts, setEndProducts] = useState<molecule[]>([])
+  
   const [rocketFuels, setRocketFuels] = useState<rocketFuel[]>([])
 
 

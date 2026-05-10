@@ -195,7 +195,7 @@ export default function RocketFuelSection({ oxidisers, fuels, rocketFuels }: roc
                         })
 
                     }}>X</button>
-                    {fuels[val.fuelPointer].chemicalNotationElement} – ratio
+                    {fuels[val.fuelPointer].chemicalNotationElement} – ratio (in moles)
                     <input
                         min={1}
                         step={1}
@@ -286,7 +286,7 @@ export default function RocketFuelSection({ oxidisers, fuels, rocketFuels }: roc
                         X
                     </button>
 
-                    {oxidisers[val.oxidiserPointer].chemicalNotationElement} – ratio
+                    {oxidisers[val.oxidiserPointer].chemicalNotationElement} – ratio (in moles)
                     <input
                         min={1}
                         step={1}

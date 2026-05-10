@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { molecule, moleculeType } from "../../utility/chemistry"
+import { molecule, moleculeType } from "../../utility/chemistry.tsx"
 import { globalAddMolecule, globalSetEditMoleculeData } from "../../pages/PropellantCalculator"
 
 interface SectionInterface {
