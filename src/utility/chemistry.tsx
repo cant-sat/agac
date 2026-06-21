@@ -10,6 +10,8 @@ export class rocketFuel{
 
     public reactionId: string = ""
 
+    public toxic : boolean = false
+ 
     public balanced:boolean = false
     public fuelAmount? : number
     public oxidiserAmount? : number
@@ -35,14 +37,17 @@ export class molecule {
 
     public molarMass = 0
 
+    public toxic : boolean = false 
+
     public static moleculeFromNotation(
         moleculeName: string,
         moleculeChemicalNotation: string,
         moleculeHeatOfFormation: number,
         tMoleculeType: moleculeType,
-        moleculeDensity : number
+        moleculeDensity : number,
+        toxic : boolean,
     ): molecule | string {
-
+        
 
         if (moleculeChemicalNotation == "" || moleculeName == "") {
             return "A name and chemical notation is needed"
@@ -58,6 +63,7 @@ export class molecule {
         retmolecule.chemicalNotation = moleculeChemicalNotation;
         retmolecule.moleculeType = tMoleculeType;
         retmolecule.density = moleculeDensity
+        retmolecule.toxic = toxic
 
         const notationParts: React.ReactNode[] = [];
 

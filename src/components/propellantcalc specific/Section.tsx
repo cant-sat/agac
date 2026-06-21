@@ -1,6 +1,8 @@
 import { useState } from "react"
 import { molecule, moleculeType } from "../../utility/chemistry.tsx"
 import { globalAddMolecule, globalSetEditMoleculeData } from "../../pages/PropellantCalculator"
+import { FaSkullCrossbones } from "react-icons/fa";
+
 
 interface SectionInterface {
     molecules: molecule[],
@@ -27,13 +29,15 @@ export default function Section({ molecules,  sectionMoleculeType, moleculeTypeN
             (document.getElementById(`${moleculeTypeName}Density`) as HTMLInputElement).value
         )
 
+        const toxic = (document.getElementById(`${moleculeTypeName}Toxic`) as HTMLInputElement).checked
+
         let t = molecule.moleculeFromNotation(
             MoleculeName,
             MoleculeNotation,
             MoleculeHeatOfFormation,
             sectionMoleculeType,
-            MoleculeDensity
-
+            MoleculeDensity,
+            toxic
         )
 
         if (typeof t == "string") {
@@ -60,7 +64,9 @@ export default function Section({ molecules,  sectionMoleculeType, moleculeTypeN
 
             <input type="number" step={0.001}  id={`${moleculeTypeName}Density`} placeholder={`${moleculeTypeName} Density (in g/cm^3)`} required/>
 
-            <button type="submit" >Add {moleculeTypeName}</button>
+            <span className="p-1 "> <input type="checkbox" id={`${moleculeTypeName}Toxic`} />  Toxic</span>
+            
+            <button  type="submit" >Add {moleculeTypeName}</button>
         </form>
 
         {message && <div className="text-red-500">{message}</div>}
@@ -70,7 +76,8 @@ export default function Section({ molecules,  sectionMoleculeType, moleculeTypeN
                 <button  onClick={() => {
                     globalSetEditMoleculeData({ index: i, molecule: value})
                 }}>Edit</button>
-                {value.name} - {value.chemicalNotationElement} (Δ<i>H</i><sub>k</sub> = {value.heatOfFormation} kJ/mol, {value.density} g/cm<sup>3</sup>)
+                {value.name} - {value.chemicalNotationElement} (Δ<i>H</i><sub>k</sub> = {value.heatOfFormation} kJ/mol, {value.density} g/cm<sup>3</sup>) 
+                {value.toxic &&  <FaSkullCrossbones className="text-lime-500 inline mx-1" title="Toxic" /> }
                 
             </div>
         ))}

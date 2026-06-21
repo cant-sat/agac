@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { molecule, rocketFuel } from "../../utility/chemistry"
 import { globalAddRocketFuel, globalRemoveRocketFuel, globalSetReactionBalanceRocketFuelPointer } from "../../pages/PropellantCalculator"
 import { gcd } from "../../utility/math"
+import { FaSkullCrossbones } from "react-icons/fa";
 
 interface rocketFuelSectionInterface {
     oxidisers: molecule[]
@@ -66,44 +67,47 @@ export default function RocketFuelSection({ oxidisers, fuels, rocketFuels }: roc
 
         let id = ""
 
-        
-            const formatSide = (
-                items: { name: string, ratio: number }[]
-            ): string => {
 
-                if (items.length === 0) return ""
+        const formatSide = (
+            items: { name: string, ratio: number }[]
+        ): string => {
 
-                // If only one → just name
-                if (items.length === 1) {
-                    return items[0].name
-                }
+            if (items.length === 0) return ""
 
-                // Multiple → show ratio prefix
-                const ratioString = items.map(i => i.ratio).join(":")
-                const namesString = items.map(i => i.name).join(", ")
-
-                return `${ratioString} ${namesString}`
+            // If only one → just name
+            if (items.length === 1) {
+                return items[0].name
             }
 
-            const fuelSide = formatSide(
-                newFuels.map(f => ({
-                    name: fuels[f.fuelPointer].chemicalNotation,
-                    ratio: f.ratio
-                }))
-            )
+            // Multiple → show ratio prefix
+            const ratioString = items.map(i => i.ratio).join(":")
+            const namesString = items.map(i => i.name).join(", ")
 
-            const oxidiserSide = formatSide(
-                newOxidisers.map(o => ({
-                    name: oxidisers[o.oxidiserPointer].chemicalNotation,
-                    ratio: o.ratio
-                }))
-            )
+            return `${ratioString} ${namesString}`
+        }
 
-            id = `${fuelSide}; ${oxidiserSide}`
-        
-            if(rocketFuelName == "") rocketFuelName = id
+        const fuelSide = formatSide(
+            newFuels.map(f => ({
+                name: fuels[f.fuelPointer].chemicalNotation,
+                ratio: f.ratio
+            }))
+        )
 
-        let tRocketFuel: rocketFuel = { fuels: newFuels, name: rocketFuelName, oxidisers: newOxidisers, oxidiserExcess: oxidiserExcess, description: rocketFuelDescription , reactionId : id, balanced: false}
+        const oxidiserSide = formatSide(
+            newOxidisers.map(o => ({
+                name: oxidisers[o.oxidiserPointer].chemicalNotation,
+                ratio: o.ratio
+            }))
+        )
+
+        id = `${fuelSide}; ${oxidiserSide}`
+
+        if (rocketFuelName == "") rocketFuelName = id
+
+        const toxic = newFuels.some(f => fuels[f.fuelPointer].toxic) || newOxidisers.some(o => oxidisers[o.oxidiserPointer].toxic)
+
+        let tRocketFuel: rocketFuel = { fuels: newFuels, name: rocketFuelName, oxidisers: newOxidisers, oxidiserExcess: oxidiserExcess, description: rocketFuelDescription, reactionId: id, balanced: false, toxic: toxic }
+
 
         globalAddRocketFuel(tRocketFuel)
 
@@ -318,20 +322,28 @@ export default function RocketFuelSection({ oxidisers, fuels, rocketFuels }: roc
             Rocket fuels
         </div>
         {rocketFuels.map((val, i) => (
-            <div>                    <button
-                className="text-red-500 font-bold"
-                onClick={() => {
-                    globalRemoveRocketFuel(i)
-                }}
-            >
-                X
-            </button>{val.name}
-            
-            {val.balanced ? "Yippi" : (<button onClick={()=>{
-                globalSetReactionBalanceRocketFuelPointer(i)
-            }}>
+            <div>
+                <button
+                    className="text-red-500 font-bold"
+                    onClick={() => {
+                        globalRemoveRocketFuel(i)
+                    }}
+                >
+                    X
+                </button>
+                
+                {val.name}
+
+                {val.balanced ? "Yippi" : (<button onClick={() => {
+                    globalSetReactionBalanceRocketFuelPointer(i)
+                }}>
                     Balance equation
-            </button>)}</div>
+                </button>)}
+
+                {val.toxic && <FaSkullCrossbones className="text-lime-500 inline mx-1" title="Toxic" />}
+            </div>
+
+
 
         ))}
     </div>)
