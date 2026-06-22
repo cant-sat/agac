@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { molecule, rocketFuel } from "../../utility/chemistry"
-import { globalAddRocketFuel, globalRemoveRocketFuel, globalSetReactionBalanceRocketFuelPointer } from "../../pages/PropellantCalculator"
+import { globalAddRocketFuel, globalRemoveRocketFuel, globalSetCurrentRocketFuelPointer } from "../../pages/PropellantCalculator"
 import { gcd } from "../../utility/math"
 import { FaSkullCrossbones } from "react-icons/fa";
 
@@ -62,7 +62,7 @@ export default function RocketFuelSection({ oxidisers, fuels, rocketFuels }: roc
 
         }
         let newOxidisers: { oxidiserPointer: number, ratio: number }[] = selectedOxidisers.map((val) => {
-            return { ...val, ratio: val.ratio / fuelDivisor }
+            return { ...val, ratio: val.ratio / oxidiserDivisor }
         })
 
         let id = ""
@@ -106,7 +106,22 @@ export default function RocketFuelSection({ oxidisers, fuels, rocketFuels }: roc
 
         const toxic = newFuels.some(f => fuels[f.fuelPointer].toxic) || newOxidisers.some(o => oxidisers[o.oxidiserPointer].toxic)
 
-        let tRocketFuel: rocketFuel = { fuels: newFuels, name: rocketFuelName, oxidisers: newOxidisers, oxidiserExcess: oxidiserExcess, description: rocketFuelDescription, reactionId: id, balanced: false, toxic: toxic }
+        const fuelAmount = Math.abs(newOxidisers.reduce((sum, current) => sum + oxidisers[current.oxidiserPointer].oxygenAmount * current.ratio, 0) / newFuels.reduce((sum, current) => sum + fuels[current.fuelPointer].oxygenAmount * current.ratio, 0)   )
+
+        const fuelRatioSum = newFuels.reduce((sum, current) => sum + current.ratio, 0)
+
+        const oxidiserRatioSum = newOxidisers.reduce((sum, current) => sum + current.ratio, 0)
+
+        const fuelMassSum = newFuels.reduce((sum, current) => sum + fuels[current.fuelPointer].molarMass * current.ratio * fuelAmount, 0)
+
+        const oxidiserMassSum = newOxidisers.reduce((sum, current) => sum + oxidisers[current.oxidiserPointer].molarMass * current.ratio, 0)
+
+        
+
+
+
+
+        let tRocketFuel: rocketFuel = { fuels: newFuels, name: rocketFuelName, oxidisers: newOxidisers, oxidiserExcess: oxidiserExcess, description: rocketFuelDescription, toxic: toxic, fuelRatioSum : fuelRatioSum, oxidiserRatioSum: oxidiserRatioSum, oxidiserAmount: 1, fuelAmount : Math.abs(fuelAmount), fuelMassSum : fuelMassSum, oxidiserMassSum : oxidiserMassSum}
 
 
         globalAddRocketFuel(tRocketFuel)
@@ -156,7 +171,7 @@ export default function RocketFuelSection({ oxidisers, fuels, rocketFuels }: roc
 
                         return (
                             <option key={i} value={i}>
-                                {fuel.chemicalNotationElement}
+                                {fuel.name} - {fuel.chemicalNotationElement}
                             </option>
                         )
                     })}
@@ -199,7 +214,7 @@ export default function RocketFuelSection({ oxidisers, fuels, rocketFuels }: roc
                         })
 
                     }}>X</button>
-                    {fuels[val.fuelPointer].chemicalNotationElement} – ratio (in moles)
+                    {fuels[val.fuelPointer] ? fuels[val.fuelPointer].chemicalNotationElement : "Error"} – ratio (in moles)
                     <input
                         min={1}
                         step={1}
@@ -242,7 +257,7 @@ export default function RocketFuelSection({ oxidisers, fuels, rocketFuels }: roc
 
                         return (
                             <option key={i} value={i}>
-                                {oxidiser.chemicalNotationElement}
+                                {oxidiser.name} - {oxidiser.chemicalNotationElement}
                             </option>
                         )
                     })}
@@ -290,7 +305,7 @@ export default function RocketFuelSection({ oxidisers, fuels, rocketFuels }: roc
                         X
                     </button>
 
-                    {oxidisers[val.oxidiserPointer].chemicalNotationElement} – ratio (in moles)
+                    {oxidisers[val.oxidiserPointer] ? oxidisers[val.oxidiserPointer].chemicalNotationElement : "Error"} – ratio (in moles)
                     <input
                         min={1}
                         step={1}
@@ -334,11 +349,9 @@ export default function RocketFuelSection({ oxidisers, fuels, rocketFuels }: roc
                 
                 {val.name}
 
-                {val.balanced ? "Yippi" : (<button onClick={() => {
-                    globalSetReactionBalanceRocketFuelPointer(i)
-                }}>
-                    Balance equation
-                </button>)}
+                {val.description && <span className="text-gray-400"> ({val.description})</span>}
+ 
+                <button onClick={() => {globalSetCurrentRocketFuelPointer(i)}}>View</button>
 
                 {val.toxic && <FaSkullCrossbones className="text-lime-500 inline mx-1" title="Toxic" />}
             </div>

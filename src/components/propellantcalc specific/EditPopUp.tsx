@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { molecule } from "../../utility/chemistry"
+import { molecule, moleculeType } from "../../utility/chemistry"
 import { globalEditMolecule, globalRemoveMolecule, globalSetEditMoleculeData } from "../../pages/PropellantCalculator"
 
 interface editPopUpInterface {
@@ -35,7 +35,9 @@ function EditPopUp({ currentMoleculeData }: editPopUpInterface): JSX.Element {
         if (currentMoleculeData) {
             (document.getElementById("newName") as HTMLInputElement).value = currentMoleculeData.molecule.name;
             (document.getElementById("newHeatOfFormation") as HTMLInputElement).value = currentMoleculeData.molecule.heatOfFormation.toString();
-            (document.getElementById(`newDensity`) as HTMLInputElement).value = currentMoleculeData.molecule.density.toString()
+            (document.getElementById(`newDensity`) as HTMLInputElement).value = currentMoleculeData.molecule.density.toString();
+            (document.getElementById(`newToxic`) as HTMLInputElement).checked = currentMoleculeData.molecule.toxic;
+            (document.getElementById(`newOxygenAmount`) as HTMLInputElement).value = Math.abs(currentMoleculeData.molecule.oxygenAmount).toString();
         }
     }, [currentMoleculeData])
 
@@ -51,10 +53,26 @@ function EditPopUp({ currentMoleculeData }: editPopUpInterface): JSX.Element {
                 (document.getElementById(`newDensity`) as HTMLInputElement).value
             )
 
+            const MoleculeOxygenAmount = Number(
+                (document.getElementById(`newOxygenAmount`) as HTMLInputElement).value
+            )
+
+            const toxic = (document.getElementById(`newToxic`) as HTMLInputElement).checked
+
             let t = { ...currentMoleculeData.molecule }
             t.density = MoleculeDensity
             t.name = MoleculeName
             t.heatOfFormation = MoleculeHeatOfFormation
+            t.toxic = toxic
+            
+
+            if(currentMoleculeData.molecule.moleculeType == moleculeType.fuel){
+                t.oxygenAmount = -Math.abs(MoleculeOxygenAmount)
+            }
+
+            else{
+                t.oxygenAmount = Math.abs(MoleculeOxygenAmount)
+            }
 
             if (typeof t == "string") {
                 setMessage(t)
@@ -63,8 +81,8 @@ function EditPopUp({ currentMoleculeData }: editPopUpInterface): JSX.Element {
                     ; (document.getElementById(`newDensity`) as HTMLInputElement).value = ""
                     ; (document.getElementById(`newName`) as HTMLInputElement).value = ""
                     ; (document.getElementById(`newHeatOfFormation`) as HTMLInputElement).value = ""
-
-
+                    ; (document.getElementById(`newToxic`) as HTMLInputElement).checked = false
+                    ; (document.getElementById(`newOxygenAmount`) as HTMLInputElement).value = ""
                 globalEditMolecule(t, currentMoleculeData.index)
                 globalSetEditMoleculeData(null)
             }
@@ -81,6 +99,11 @@ function EditPopUp({ currentMoleculeData }: editPopUpInterface): JSX.Element {
             <br />
             Densitiy : <input type="number" step={0.001} name="newDensity" id="newDensity" /> g/cm<sup>3</sup>
             <br />
+            Toxic : <input type="checkbox" name="newToxic" id="newToxic" />
+            <br />
+            Oxygen amount : {currentMoleculeData?.molecule.moleculeType == moleculeType.fuel ? "-" : ""} <input type="number" step={0.001} name="newOxygenAmount" id="newOxygenAmount" />
+            <br />
+            
             <button type="submit" >Save data</button>
             <div>{message}</div>
         </form>

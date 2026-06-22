@@ -28,7 +28,9 @@ export default function Section({ molecules,  sectionMoleculeType, moleculeTypeN
         const MoleculeDensity = Number(
             (document.getElementById(`${moleculeTypeName}Density`) as HTMLInputElement).value
         )
-
+        const MoleculeOxygenAmount = Number( 
+            (document.getElementById(`${moleculeTypeName}OxygenAmount`) as HTMLInputElement).value
+        )
         const toxic = (document.getElementById(`${moleculeTypeName}Toxic`) as HTMLInputElement).checked
 
         let t = molecule.moleculeFromNotation(
@@ -37,7 +39,8 @@ export default function Section({ molecules,  sectionMoleculeType, moleculeTypeN
             MoleculeHeatOfFormation,
             sectionMoleculeType,
             MoleculeDensity,
-            toxic
+            toxic,
+            MoleculeOxygenAmount
         )
 
         if (typeof t == "string") {
@@ -48,6 +51,7 @@ export default function Section({ molecules,  sectionMoleculeType, moleculeTypeN
                 ; (document.getElementById(`${moleculeTypeName}Name`) as HTMLInputElement).value = ""
                 ; (document.getElementById(`${moleculeTypeName}HeatOfFormation`) as HTMLInputElement).value = ""
                 ; (document.getElementById(`${moleculeTypeName}Density`) as HTMLInputElement).value = ""
+                ; (document.getElementById(`${moleculeTypeName}OxygenAmount`) as HTMLInputElement).value = ""
 
             globalAddMolecule(t)
         }
@@ -64,6 +68,8 @@ export default function Section({ molecules,  sectionMoleculeType, moleculeTypeN
 
             <input type="number" step={0.001}  id={`${moleculeTypeName}Density`} placeholder={`${moleculeTypeName} Density (in g/cm^3)`} required/>
 
+            <input type="number" step={0.001}  id={`${moleculeTypeName}OxygenAmount`} placeholder={`${moleculeTypeName} Oxygen Amount`} required/>
+            
             <span className="p-1 "> <input type="checkbox" id={`${moleculeTypeName}Toxic`} />  Toxic</span>
             
             <button  type="submit" >Add {moleculeTypeName}</button>

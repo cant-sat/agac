@@ -8,14 +8,18 @@ export class rocketFuel{
     public oxidiserExcess : number = 0
     public description : string = ""
 
-    public reactionId: string = ""
-
     public toxic : boolean = false
  
-    public balanced:boolean = false
-    public fuelAmount? : number
-    public oxidiserAmount? : number
-    public endProducts? : {amount:number, endProductPointer : number}[]
+    public fuelAmount : number = 0
+    public oxidiserAmount : number = 0
+
+    public fuelRatioSum = 0
+    public oxidiserRatioSum = 0
+
+    public fuelMassSum = 0
+    public oxidiserMassSum = 0
+
+
 }
 
 
@@ -32,6 +36,8 @@ export class molecule {
     public elementsById: Uint16Array = new Uint16Array(118).fill(0);
     public elementsIdList: number[] = []
 
+    public oxygenAmount: number = 0 // positive for oxidisers, negative for fuels (positive is the amount of oxygen it can give, negative is the amount of oxygen it needs to burn)
+
 
     public moleculeType: moleculeType = -1
 
@@ -46,6 +52,7 @@ export class molecule {
         tMoleculeType: moleculeType,
         moleculeDensity : number,
         toxic : boolean,
+        oxygenAmount : number
     ): molecule | string {
         
 
@@ -67,7 +74,12 @@ export class molecule {
 
         const notationParts: React.ReactNode[] = [];
 
-        
+        if(tMoleculeType == moleculeType.oxidiser){
+            retmolecule.oxygenAmount = Math.abs(oxygenAmount)
+        }
+        else if(tMoleculeType == moleculeType.fuel){
+            retmolecule.oxygenAmount = -Math.abs(oxygenAmount)
+        }
 
         for (let i = 0; i < moleculeChemicalNotation.length; i += 0) {
 
@@ -172,7 +184,6 @@ export enum moleculeType {
     unassigned = -1,
     oxidiser,
     fuel,
-    endProduct
 }
 
 export let elements: { [key: string]: ElementType } = {}
